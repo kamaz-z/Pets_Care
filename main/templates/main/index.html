@@ -1,0 +1,57 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'main/css/style.css' %}">
+    <!-- <script src=""></script> -->
+    <title> Home </title>
+</head>
+
+<body>
+    <div class="Menu_container">
+        <ul>
+            <li><a href="#">Головна</a></li>
+            <li><a href="#">Улюбленці</a></li>
+            <li><a href="#">Послуги</a></li>
+            <li><a href="#">Профіль</a></li>
+        </ul>
+    </div>
+    <div class="container">
+        <h2 style="color: rgb(105, 17, 206);">Привіт , name</h2>
+    </div>
+    <div class="dog_info">
+    <img src="{% static 'main/img/dog_example_2.webp' %}" alt="Барсік">
+    
+    <div class="dog_info_text">
+        <h2>Барсік</h2>
+        <p>Веселий та енергійний золотистий ретривер, який обожнює довгі прогулянки та ігри з м'ячем.</p>
+    </div>
+
+    <div class="dog_history">
+        <h3>Медична картка</h3>
+        
+        <div class="history_card">
+            <span class="date">12.04.2024</span>
+            <h4>Щеплення від сказу</h4>
+            <p>Вакцина: Nobivac Rabies. Наступний огляд через рік.</p>
+        </div>
+
+        <div class="history_card">
+            <span class="date">01.02.2024</span>
+            <h4>Обробка від паразитів</h4>
+            <p>Препарат: Bravecto. Стан здоров'я відмінний.</p>
+        </div>
+
+        <div class="history_card">
+            <span class="date">15.11.2023</span>
+            <h4>Плановий огляд</h4>
+            <p>Вага: 25 кг. Температура в нормі. Рекомендовано змінити корм.</p>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>

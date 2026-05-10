@@ -1,0 +1,93 @@
+.Menu_container {
+    display: grid;
+    background-color: aliceblue;
+    border: 1px black solid;
+    width: 100%;
+    justify-self: center;
+}
+
+.Menu_container ul {
+    display: flex; 
+    justify-content: space-around; 
+    width: 100%; 
+    margin: 0;
+    padding: 0;
+    list-style: none; 
+}
+
+.Menu_container ul li {
+    padding: 15px;
+}
+
+.Menu_container ul li a{
+    text-decoration: none;
+}
+/* Головний контейнер для собаки */
+.dog_info {
+    display: flex;
+    gap: 30px; /* Відступ між фото, описом та історією */
+    padding: 20px;
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    margin-top: 20px;
+}
+
+/* Фото собаки */
+.dog_info img {
+    width: 20%;
+    height: 20%;
+    border-radius: 100px;
+    object-fit: cover;
+}
+
+/* Текст опису (середина) */
+.dog_info_text {
+    flex: 1; /* Займає весь вільний простір посередині */
+}
+
+/* Секція історії (справа) */
+.dog_history {
+    width: 300px; /* Фіксована ширина для колонки історії */
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 10px;
+    border-left: 4px solid #6911ce; /* Декоративна лінія */
+}
+
+.dog_history h3 {
+    margin-top: 0;
+    color: #6911ce;
+    font-size: 1.2rem;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+}
+
+/* Стиль окремих карток подій */
+.history_card {
+    background: white;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    border: 1px solid #eee;
+}
+
+.history_card .date {
+    font-size: 0.8rem;
+    color: #888;
+    font-weight: bold;
+}
+
+.history_card h4 {
+    margin: 5px 0;
+    font-size: 1rem;
+    color: #333;
+}
+
+.history_card p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #666;
+    line-height: 1.4;
+}
