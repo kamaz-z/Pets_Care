@@ -1,0 +1,169 @@
+:root {
+    --primary: #6911ce; /* Твій фіолетовий */
+    --primary-hover: #520da3;
+    --black: #1a1a1a;
+    --dark-grey: #2d2d2d;
+    --white: #ffffff;
+    --bg-gradient: linear-gradient(135deg, #1a1a1a 0%, #3d107a 100%);
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: var(--bg-gradient);
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--white);
+}
+
+.reg-container {
+    width: 100%;
+    max-width: 450px;
+    padding: 20px;
+}
+
+.reg-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 40px;
+    border-radius: 24px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+}
+
+.reg-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+}
+
+.logo span {
+    color: var(--primary);
+}
+
+h1 {
+    font-size: 1.8rem;
+    margin: 0;
+}
+
+.reg-header p {
+    font-size: 0.9rem;
+    color: #aaa;
+    margin-top: 8px;
+}
+
+/* Форма */
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-row {
+    display: flex;
+    gap: 15px;
+}
+
+label {
+    display: block;
+    font-size: 0.85rem;
+    margin-bottom: 8px;
+    color: #ddd;
+}
+
+input {
+    width: 100%;
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    color: white;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+}
+
+input:focus {
+    outline: none;
+    border-color: var(--primary);
+    background: rgba(255, 255, 255, 0.12);
+    box-shadow: 0 0 10px rgba(105, 17, 206, 0.3);
+}
+
+/* Чіпси (вибір послуг) */
+.service-selection p {
+    font-size: 0.85rem;
+    margin-bottom: 10px;
+    color: #ddd;
+}
+
+.chips {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 25px;
+}
+
+.chip {
+    cursor: pointer;
+}
+
+.chip input {
+    display: none;
+}
+
+.chip span {
+    display: block;
+    padding: 8px 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    font-size: 0.8rem;
+    transition: all 0.3s;
+}
+
+.chip input:checked + span {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: white;
+}
+
+/* Кнопка */
+.btn-reg {
+    width: 100%;
+    padding: 15px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.btn-reg:hover {
+    background: var(--primary-hover);
+}
+
+.footer-text {
+    text-align: center;
+    font-size: 0.85rem;
+    margin-top: 20px;
+    color: #aaa;
+}
+
+.footer-text a {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.footer-text a:hover {
+    text-decoration: underline;
+}

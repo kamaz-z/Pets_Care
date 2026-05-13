@@ -1,3 +1,5 @@
 from django.contrib import admin
+from .models import Type_OF_PETS, Pets
 
-# Register your models here.
+admin.site.register(Type_OF_PETS)
+admin.site.register(Pets)

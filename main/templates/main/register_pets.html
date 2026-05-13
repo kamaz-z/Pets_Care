@@ -1,0 +1,85 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Реєстрація | PetCare Control</title>
+    <link rel="stylesheet" href="{% static 'main/css/regiser.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="reg-container">
+        <div class="reg-card">
+            <div class="reg-header">
+                <div class="logo">Pet<span>Care</span></div>
+                <h1>Створити профіль</h1>
+                <p>Ваші улюбленці заслуговують на найкращий облік</p>
+            </div>
+            
+            <form id="registration-form" method="post">
+                {% csrf_token %} <div class="input-group">
+                    <label for="username">Логін (username)</label>
+                    <input type="text" name="username" id="username" placeholder="ivan_user" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="email">Електронна пошта</label>
+                    <input type="email" name="email" id="email" placeholder="example@mail.com" required>
+                </div>
+
+                <div class="input-row">
+                    <div class="input-group">
+                        <label for="password">Пароль</label>
+                        <input type="password" name="password" id="password" placeholder="••••••••" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="confirm-pas<form method="post">
+    {% csrf_token %}
+    <div class="reg-header">
+        <h1>Реєстрація улюбленця</h1>
+    </div>
+    
+    <div class="input-group">
+        <label>Тип тварини</label>
+        {{ form.type_pets }}
+    </div>
+    
+    <div class="input-group">
+        <label>Кличка</label>
+        {{ form.name }}
+    </div>
+
+    <div class="input-row">
+        <div class="input-group">
+            <label>Вік</label>
+            {{ form.age }}
+        </div>
+        <div class="input-group">
+            <label>Вага (кг)</label>
+            {{ form.weight }}
+        </div>
+    </div>
+
+    <div class="input-group">
+        <label>Номер паспорта</label>
+        {{ form.passport_number }}
+    </div>
+
+    <button type="submit" class="btn-reg">Зберегти хвостика</button>
+</form>sword">Підтвердження</label>
+                        <input type="password" name="confirm_password" id="confirm-password" placeholder="••••••••" required>
+                    </div>
+                </div>
+
+                
+
+                <button type="submit" class="btn-reg">Зареєструватися</button>
+                
+                <p class="footer-text">
+                </p>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
