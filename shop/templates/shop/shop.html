@@ -1,0 +1,81 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'main/css/order.css' %}">
+    <title>PetCare Shop</title>
+</head>
+
+<body>
+    <nav>
+        <div class="nav-logo">Pet<span>Care</span></div>
+        <ul class="nav-links">
+            <li><a href="{% url 'home' %}">Головна</a></li>
+            <li><a href="{% url 'shop_page' %}" class="active">Товари</a></li>
+            <li><a href="{% url 'register_pets' %}">Додати тварину</a></li>
+            <li><a href="{% url 'servises' %}">Послуги</a></li>
+        </ul>
+        <div class="nav-right">
+            <button class="notif-btn">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="2.2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                    <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+                </svg>
+                <span class="notif-dot"></span>
+            </button>
+            <div class="avatar">Ол</div>
+        </div>
+    </nav>
+
+    <main>
+        <div class="main-header">
+            <a href="#"></a>
+        </div>
+
+        <div class="product-grid">
+            {% for product in products %}
+            <article class="product-card">
+                <div class="product-badge yellow">
+                    {% if product.count > 0 %}В наявності{% else %}Немає{% endif %}
+                </div>
+
+                <div class="product-image-container">
+                    {% if product.img %}
+                    <img src="{{ product.img.url }}" alt="{{ product.name }}"
+                        style="width: 100%; height: 180px; object-fit: cover; border-radius: 20px;">
+                    {% else %}
+                    <div class="product-image-placeholder">🛒</div>
+                    {% endif %}
+                </div>
+
+                <div class="product-info">
+                    <h3 class="product-title">{{ product.name }}</h3>
+
+                    <div class="product-price-row">
+                        <p class="product-price">{{ product.price }} грн</p>
+                        <p class="product-weight">{{ product.count }} шт.</p>
+                    </div>
+
+                    <div class="product-description">
+                        <p>{{ product.discrp|truncatechars:60 }}</p>
+                    </div>
+
+                    <div class="product-actions">
+                        <button class="buy-button">В кошик</button>
+                    </div>
+                </div>
+            </article>
+            {% empty %}
+            <p style="text-align: center; width: 100%; grid-column: 1 / -1;">
+                Товари скоро з'являться у продажу
+            </p>
+            {% endfor %}
+        </div>
+    </main>
+</body>
+
+</html>

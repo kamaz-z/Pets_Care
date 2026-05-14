@@ -1,7 +1,9 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render
 from .form import Pets_Register_Form
+from .models import Pets
 def index(request):
-    return render(request, 'main/index.html')
+    pets = Pets.objects.all()
+    return render(request, 'main/index.html',{'pets':pets})
 
 def register(request):
     return render(request, 'main/register.html')

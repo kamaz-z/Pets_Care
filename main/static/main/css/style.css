@@ -1,7 +1,5 @@
-@import "tailwindcss";
-@plugin  "daisyui";
 
-.Menu_container {
+ .Menu_container {
     background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
