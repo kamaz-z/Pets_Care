@@ -86,33 +86,137 @@ class Product(models.Model):
 
 
 ================================================
+FILE: templates\shop\order_shop.html
+================================================
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Реєстрація улюбленця | PetCare</title>
+    <link rel="stylesheet" href="{% static 'main/css/regiser.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Додамо трохи стилів для завантаження фото, якщо їх немає в CSS */
+        .input-group label { display: block; margin-bottom: 8px; font-weight: 600; color: #4B5563; }
+        .file-upload-wrapper {
+            border: 2px dashed #A78BFA;
+            padding: 15px;
+            border-radius: 12px;
+            background: #F5F3FF;
+            text-align: center;
+        }
+        .input-field-file { width: 100%; cursor: pointer; }
+    </style>
+</head>
+
+<body>
+    <div class="reg-container">
+        <div class="reg-card">
+            <div class="reg-header">
+                <div class="logo">Pet<span>Care</span></div>
+                <h1>Новий хвостик</h1>
+                <p>Додайте інформацію про вашого улюбленця</p>
+            </div>
+
+            <form id="pet-registration-form" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div class="input-group">
+                    <label>Тип тварини</label>
+                    {{ form.type_pets }}
+                </div>
+
+                <div class="input-group">
+                    <label>Порода</label>
+                    {{ form.poroda }}
+                </div>
+
+                <div class="input-group">
+                    <label>Кличка</label>
+                    {{ form.name }}
+                </div>
+
+                <div class="input-row" style="display: flex; gap: 15px;">
+                    <div class="input-group" style="flex: 1;">
+                        <label>Вік</label>
+                        {{ form.age }}
+                    </div>
+                    <div class="input-group" style="flex: 1;">
+                        <label>Вага (кг)</label>
+                        {{ form.weight }}
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Номер паспорта</label>
+                    {{ form.passport_number }}
+                </div>
+
+                <div class="input-group">
+                    <label>Фото улюбленця</label>
+                    <div class="file-upload-wrapper">
+                        {{ form.img }}
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-reg" style="margin-top: 20px; width: 100%; padding: 14px; background: #7C3AED; color: white; border: none; border-radius: 12px; font-weight: 700; cursor: pointer;">
+                    Зберегти хвостика ✨
+                </button>
+
+                <p class="footer-text" style="text-align: center; margin-top: 20px;">
+                    <a href="{% url 'home' %}" style="color: #6B7280; text-decoration: none; font-size: 0.9rem;">← Повернутися на головну</a>
+                </p>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>
+
+================================================
 FILE: templates\shop\shop.html
 ================================================
 
 {% load static %}
 <!DOCTYPE html>
 <html lang="uk">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'main/css/order.css' %}"> 
+    <link rel="stylesheet" href="{% static 'main/css/order.css' %}">
     <title>PetCare Shop</title>
 </head>
+
 <body>
-    <header>
-        <nav class="desktop-header">
-            <ul>
-                <li><a href="/" class="home"></a></li>
-                <li class="orders-selected"><a href="{% url 'shop_page' %}" class="design"></a></li>
-                <li><a href="#" class="profile"></a></li>
-            </ul>
-        </nav>
-    </header>
+    <nav>
+        <div class="nav-logo">Pet<span>Care</span></div>
+        <ul class="nav-links">
+            <li><a href="{% url 'home' %}">Головна</a></li>
+            <li><a href="{% url 'shop_page' %}" class="active">Товари</a></li>
+            <li><a href="{% url 'register_pets' %}">Додати тварину</a></li>
+            <li><a href="{% url 'servises' %}">Послуги</a></li>
+        </ul>
+        <div class="nav-right">
+            <button class="notif-btn">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="2.2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                    <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+                </svg>
+                <span class="notif-dot"></span>
+            </button>
+            <div class="avatar">Ол</div>
+        </div>
+    </nav>
 
     <main>
         <div class="main-header">
-            <h1>Магазин товарів</h1>
-            <a href="#"></a> 
+            <a href="#"></a>
         </div>
 
         <div class="product-grid">
@@ -121,18 +225,19 @@ FILE: templates\shop\shop.html
                 <div class="product-badge yellow">
                     {% if product.count > 0 %}В наявності{% else %}Немає{% endif %}
                 </div>
-                
+
                 <div class="product-image-container">
                     {% if product.img %}
-                        <img src="{{ product.img.url }}" alt="{{ product.name }}" style="width: 100%; height: 180px; object-fit: cover; border-radius: 20px;">
+                    <img src="{{ product.img.url }}" alt="{{ product.name }}"
+                        style="width: 100%; height: 180px; object-fit: cover; border-radius: 20px;">
                     {% else %}
-                        <div class="product-image-placeholder">🛒</div>
+                    <div class="product-image-placeholder">🛒</div>
                     {% endif %}
                 </div>
 
                 <div class="product-info">
                     <h3 class="product-title">{{ product.name }}</h3>
-                    
+
                     <div class="product-price-row">
                         <p class="product-price">{{ product.price }} грн</p>
                         <p class="product-weight">{{ product.count }} шт.</p>
@@ -155,6 +260,7 @@ FILE: templates\shop\shop.html
         </div>
     </main>
 </body>
+
 </html>
 
 ================================================
