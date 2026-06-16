@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.forms import ModelForm
-from .models import Pets, Type_OF_PETS
+from .models import Pets, find_Pets
 
 class Register_Form(UserCreationForm):
     email = forms.EmailField(required=True, label="Електронна пошта")
@@ -43,4 +43,21 @@ class Pets_Register_Form(ModelForm):
             'passport_number': forms.NumberInput(attrs={'class': 'input-field', 'placeholder': 'Номер паспорта'}),
             # Віджет для фото
             'img': forms.FileInput(attrs={'class': 'input-field-file'}),
+        }
+
+
+
+class Finf_Pet_Form(forms.ModelForm):
+    class Meta:
+        model = find_Pets
+        fields = ['pet_name', 'pet_type', 'last_location', 'discrp', 'contacts', 'img']
+        
+        # Додаємо класи для стилізації, щоб Django-поля виглядали як наші красиві інпути
+        widgets = {
+            'pet_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Наприклад: Арчі'}),
+            'pet_type': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Собака, Кіт...'}),
+            'last_location': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'вулиця, район або місто'}),
+            'discrp': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Особливі прикмети...'}),
+            'contacts': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '+380... або Telegram'}),
+            'img': forms.FileInput(attrs={'class': 'form-control'}),
         }

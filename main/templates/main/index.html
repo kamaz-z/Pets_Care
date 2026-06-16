@@ -326,6 +326,13 @@
             <li><a href="{% url 'shop_page' %}">Товари</a></li>
             <li><a href="{% url 'register_pets' %}">Додати тварину</a></li>
             <li><a href="{% url 'servises' %}">Послуги</a></li>
+            {% if user.is_authenticated %}
+            <li><a style="background-color: #EF4444;" href="{% url 'logout' %}">Вийти</a></li>
+            {% else %}
+            <li><a style="background-color: var(--purple);color: #F5F3FF;" href="{% url 'register' %}">Увійти</a></li>
+
+            {% endif %}
+
         </ul>
         <div class="nav-right">
             <div class="avatar">UA</div>
@@ -334,7 +341,11 @@
 
     <div class="page">
         <div class="greeting">
-            <h1>Привіт,Христя! 👋</h1>
+            {% if user.is_authenticated %}
+            <h1>Привіт, {{ user.username }} 👋</h1>
+            {% else %}
+            <h1>Привіт! 👋</h1>
+            {% endif %}
             <p>Ваші улюбленці чекають на вашу увагу.</p>
         </div>
 
@@ -386,19 +397,20 @@
                         <div class="action-icon">🏥</div>
                         <span>Здоров'я</span>
                     </a>
-                    <a href="#" class="action-btn">
-                        <div class="action-icon">📋</div>
-                        <span>Записи</span>
+                    <a href="{% url 'ai' %}" class="action-btn">
+                        <div class="action-icon">🤖</div>
+                        <span> AI помічник</span>
                     </a>
-                    <a href="{% url 'shop_page' %}" class="action-btn">
-                        <div class="action-icon">🛒</div>
-                        <span>Магазин</span>
+                    <a href="{% url 'find_pets' %}" class="action-btn">
+                        <div class="action-icon">🐾</div>
+                        <span>Знайди мене</span>
                     </a>
-                    <a href="{% url 'servises' %}" class="action-btn">
-                        <div class="action-icon">✂️</div>
-                        <span>Послуги</span>
+                    <a href="{% url 'find_home' %}" class="action-btn">
+                        <div class="action-icon">🏠</div>
+                        <span>шуакю дім</span>
                     </a>
-                    <a href="#" class="action-btn">
+                    <a href="https://www.google.com.ua/maps/search/pet-friendly+%D0%B7%D0%B0%D0%BA%D0%BB%D0%B0%D0%B4%D0%B8+%D0%BB%D1%8C%D0%B2%D1%96%D0%B2/@49.8220062,24.0228549,12.96z?hl=ru&entry=ttu&g_ep=EgoyMDI2MDYxMC4wIKXMDSoASAFQAw%3D%3D"
+                        class="action-btn">
                         <div class="action-icon">📍</div>
                         <span>Мапа</span>
                     </a>

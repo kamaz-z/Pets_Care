@@ -15,7 +15,7 @@ class Servises(models.Model):
 class Order(models.Model):
     service = models.ForeignKey(Servises, on_delete=models.CASCADE, verbose_name="Послуга")
     customer_phone = models.CharField(max_length=15, verbose_name="Номер телефону")
-    order_date = models.DateField(verbose_name="Дата візиту")
+    order_date = models.DateTimeField(verbose_name="Дата візиту")
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

@@ -14,8 +14,9 @@ class Order_Servises_form(forms.ModelForm):
                 'placeholder': '+380XXXXXXXXX'
             }),
             # Календар для вибору дати
-            'order_date': forms.DateInput(attrs={
+            'order_date': forms.DateTimeInput(attrs={
                 'class': 'input-group', 
-                'type': 'date'
+                'type': 'date',
+                'type_2':'time'
             }),
         }

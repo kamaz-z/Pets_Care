@@ -1,0 +1,349 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PetCare | Пошук улюбленців</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --purple: #7C3AED;
+            --purple-light: #EDE9FE;
+            --purple-mid: #A78BFA;
+            --bg: #F5F3FF;
+            --white: #FFFFFF;
+            --text: #1C1C2E;
+            --muted: #6B7280;
+            --border: #E5E7EB;
+            --green: #10B981;
+            --red: #EF4444;
+            --yellow: #F59E0B;
+            --card-shadow: 0 2px 16px rgba(124, 58, 237, 0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            padding-bottom: 100px;
+        }
+
+        /* ── NAV ── */
+        nav {
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            padding: 0 40px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 1px 8px rgba(0, 0, 0, 0.06);
+        }
+
+        .nav-logo {
+            font-family: 'Nunito', sans-serif;
+            font-weight: 900;
+            font-size: 1.4rem;
+            color: var(--purple);
+            text-decoration: none;
+        }
+
+        .nav-logo span {
+            color: var(--text);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 8px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--muted);
+            font-weight: 600;
+            font-size: 0.9rem;
+            padding: 8px 16px;
+            border-radius: 10px;
+            transition: 0.2s;
+        }
+
+        .nav-links a:hover,
+            .nav-links a.active {
+            background: var(--purple-light);
+            color: var(--purple);
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: var(--purple);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+        }
+
+        /* ── LAYOUT ── */
+        .page {
+            max-width: 900px; /* Зменшено ширину контенту для кращого вигляду без бокової панелі */
+            margin: 0 auto;
+            padding: 36px 32px;
+        }
+
+        .page-header {
+            margin-bottom: 32px;
+            text-align: center; /* Центрування заголовку */
+        }
+
+        .page-header h1 {
+            font-family: 'Nunito', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 900;
+            margin-bottom: 8px;
+        }
+
+        /* ── LOST PET CARDS ── */
+        .feed-column {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .pet-card {
+            background: var(--white);
+            border-radius: 24px;
+            padding: 24px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border);
+            display: flex;
+            gap: 24px;
+            align-items: flex-start;
+            position: relative;
+            transition: 0.3s;
+        }
+
+        .pet-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(124, 58, 237, 0.12);
+        }
+
+        .pet-photo img {
+            width: 140px;
+            height: 140px;
+            border-radius: 20px;
+            object-fit: cover;
+            border: 1px solid var(--border);
+        }
+
+        .pet-info {
+            flex-grow: 1;
+        }
+
+        .pet-info h2 {
+            font-family: 'Nunito', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 900;
+            margin-bottom: 2px;
+            color: var(--text);
+        }
+
+        .pet-info .breed {
+            color: var(--muted);
+            font-size: 0.9rem;
+            margin-bottom: 12px;
+        }
+
+        .pet-info .breed span {
+            color: var(--purple);
+            font-weight: 700;
+        }
+
+        .pet-description {
+            font-size: 0.95rem;
+            color: #4B5563;
+            line-height: 1.5;
+            margin-bottom: 16px;
+        }
+
+        .meta-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .meta-chip {
+            background: #F3F4F6;
+            border-radius: 10px;
+            padding: 6px 12px;
+            font-size: 0.85rem;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 600;
+        }
+
+        .meta-chip.date {
+            background: var(--purple-light);
+            color: var(--purple);
+        }
+
+        .meta-chip.phone {
+            background: #E0F2FE;
+            color: #0369A1;
+        }
+
+        /* ── BOTTOM NAV ── */
+        .bottom-bar {
+            background: var(--white);
+            border-top: 1px solid var(--border);
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 70px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+            z-index: 100;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            padding: 10px 30px;
+            color: var(--muted);
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .tab-btn.active {
+            color: var(--purple);
+            font-weight: 700;
+        }
+
+        .tab-icon {
+            font-size: 1.2rem;
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 768px) {
+            .page {
+                padding: 20px 16px;
+            }
+
+            nav {
+                padding: 0 20px;
+            }
+
+            .nav-links {
+                display: none; /* Ховаємо десктопне меню на мобільних, бо є bottom-bar */
+            }
+
+            .pet-card {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 16px;
+            }
+
+            .pet-photo img {
+                width: 100%;
+                height: 220px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <a href="{% url 'home' %}" class="nav-logo">Pet<span>Care</span></a>
+        <ul class="nav-links">
+            <li><a href="{% url 'home' %}">Головна</a></li>
+            <li><a href="{% url 'shop_page' %}">Товари</a></li>
+            <li><a href="{% url 'register_pets' %}">Додати тварину</a></li>
+            <li><a href="{% url 'servises' %}">Послуги</a></li>
+            <li><a style="background-color: #EF4444; color: white;" href="{% url 'logout' %}">Вийти</a></li>
+        </ul>
+        <div class="nav-right">
+            <div class="avatar">UA</div>
+        </div>
+    </nav>
+
+    <div class="page">
+        <div class="page-header">
+            <h1>Пошук улюбленців 🔍</h1>
+            <p>Допоможіть знайти хвостикам дім. Усі оголошення моделюються адміністрацією.</p>
+        </div>
+
+        <div class="feed-column">
+            {% for pet in pets %}
+            <div class="pet-card">
+                <div class="pet-photo">
+                    {% if pet.img %}
+                        <img src="{{ pet.img.url }}" alt="{{ pet.name }}">
+                    --
+                    {% else %}
+                        <img src="{% static 'main/images/no-image.png' %}" alt="Немає фото">
+                    {% endif %}
+                </div>
+
+                <div class="pet-info">
+                    <h2>{{ pet.name }}</h2>
+                    <p class="breed">Порода/Тип: <span>{{ pet.type_pets }}</span></p>
+                    <p class="pet-description">
+                        {{ pet.discp }}
+                    </p>
+                    <div class="meta-row">
+                        {% if pet.contact %}
+                            <div class="meta-chip phone">📞 {{ pet.contact }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div style="background: var(--white); border-radius: 24px; padding: 40px; text-align: center; border: 1px solid var(--border); box-shadow: var(--card-shadow);">
+                <p style="color: var(--muted); font-size: 1.1rem;">Наразі немає активних оголошень. Усі хвостики вдома! 🥰</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="bottom-bar">
+        <button class="tab-btn">
+            <div class="tab-icon">🏠</div>
+            <span>Головна</span>
+        </button>
+        <button class="tab-btn active">
+            <div class="tab-icon">🐾</div>
+            <span>Улюбленці</span>
+        </button>
+        <button class="tab-btn">
+            <div class="tab-icon">👤</div>
+            <span>Профіль</span>
+        </button>
+    </div>
+
+</body>
+</html>

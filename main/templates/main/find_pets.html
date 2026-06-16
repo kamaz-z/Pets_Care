@@ -1,0 +1,501 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PetCare | Пошук улюбленців</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=DM+Sans:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --purple: #7C3AED;
+            --purple-light: #EDE9FE;
+            --purple-mid: #A78BFA;
+            --bg: #F5F3FF;
+            --white: #FFFFFF;
+            --text: #1C1C2E;
+            --muted: #6B7280;
+            --border: #E5E7EB;
+            --green: #10B981;
+            --red: #EF4444;
+            --yellow: #F59E0B;
+            --card-shadow: 0 2px 16px rgba(124, 58, 237, 0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            padding-bottom: 100px;
+        }
+
+        /* ── NAV ── */
+        nav {
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            padding: 0 40px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 1px 8px rgba(0, 0, 0, 0.06);
+        }
+
+        .nav-logo {
+            font-family: 'Nunito', sans-serif;
+            font-weight: 900;
+            font-size: 1.4rem;
+            color: var(--purple);
+            text-decoration: none;
+        }
+
+        .nav-logo span {
+            color: var(--text);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 8px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--muted);
+            font-weight: 600;
+            font-size: 0.9rem;
+            padding: 8px 16px;
+            border-radius: 10px;
+            transition: 0.2s;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            background: var(--purple-light);
+            color: var(--purple);
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: var(--purple);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+        }
+
+        /* ── LAYOUT ── */
+        .page {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 36px 32px;
+        }
+
+        .page-header {
+            margin-bottom: 32px;
+        }
+
+        .page-header h1 {
+            font-family: 'Nunito', sans-serif;
+            font-size: 2rem;
+            font-weight: 900;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 400px 1fr;
+            gap: 32px;
+        }
+
+        /* ── FORM STYLE ── */
+        .card {
+            background: var(--white);
+            border-radius: 24px;
+            padding: 28px;
+            border: 1px solid var(--border);
+            box-shadow: var(--card-shadow);
+            height: fit-content;
+        }
+
+        .card-title {
+            font-family: 'Nunito', sans-serif;
+            font-weight: 800;
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 6px;
+        }
+
+        /* Стилізація полів форми Django */
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.9rem;
+            background: #FAFAFA;
+            color: var(--text);
+            transition: 0.2s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--purple-mid);
+            background: var(--white);
+            box-shadow: 0 0 0 3px var(--purple-light);
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .btn-submit {
+            width: 100%;
+            background: var(--purple);
+            color: var(--white);
+            border: none;
+            padding: 14px;
+            border-radius: 12px;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-top: 8px;
+        }
+
+        .btn-submit:hover {
+            background: #6D28D9;
+            transform: translateY(-1px);
+        }
+
+        /* Помилки валідації полів */
+        .field-errors {
+            color: var(--red);
+            font-size: 0.8rem;
+            margin-top: 4px;
+            list-style: none;
+        }
+
+        /* ── LOST PET CARDS ── */
+        .feed-column {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .pet-card {
+            background: var(--white);
+            border-radius: 24px;
+            padding: 24px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border);
+            display: flex;
+            gap: 24px;
+            align-items: flex-start;
+            position: relative;
+            transition: 0.3s;
+        }
+
+        .pet-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .badge-status {
+            position: absolute;
+            top: 20px;
+            right: 24px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 6px 12px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .pet-photo img {
+            width: 130px;
+            height: 130px;
+            border-radius: 20px;
+            object-fit: cover;
+            border: 1px solid var(--border);
+        }
+
+        .pet-info {
+            flex-grow: 1;
+            padding-right: 100px;
+        }
+
+        .pet-info h2 {
+            font-family: 'Nunito', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 900;
+            margin-bottom: 2px;
+        }
+
+        .pet-info .breed {
+            color: var(--muted);
+            font-size: 0.9rem;
+            margin-bottom: 12px;
+        }
+
+        .pet-info .breed span {
+            color: var(--purple);
+            font-weight: 700;
+        }
+
+        .pet-description {
+            font-size: 0.9rem;
+            color: #4B5563;
+            line-height: 1.5;
+            margin-bottom: 16px;
+        }
+
+        .meta-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .meta-chip {
+            background: #F3F4F6;
+            border-radius: 10px;
+            padding: 6px 12px;
+            font-size: 0.8rem;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 500;
+        }
+
+        .meta-chip.location {
+            background: #FEF3C7;
+            color: #D97706;
+        }
+
+        .meta-chip.date {
+            background: var(--purple-light);
+            color: var(--purple);
+        }
+
+        /* ── BOTTOM NAV ── */
+        .bottom-bar {
+            background: var(--white);
+            border-top: 1px solid var(--border);
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 70px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+            z-index: 100;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            padding: 10px 30px;
+            color: var(--muted);
+            text-align: center;
+        }
+
+        .tab-btn.active {
+            color: var(--purple);
+            font-weight: 700;
+        }
+
+        .tab-icon {
+            font-size: 1.2rem;
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 900px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            nav {
+                padding: 0 20px;
+            }
+
+            .pet-card {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .pet-photo img {
+                width: 100%;
+                height: 200px;
+            }
+
+            .badge-status {
+                position: static;
+                display: inline-block;
+                margin-bottom: 12px;
+                width: fit-content;
+            }
+
+            .pet-info {
+                padding-right: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <a href="{% url 'home' %}" class="nav-logo">Pet<span>Care</span></a>
+        <ul class="nav-links">
+            <li><a href="{% url 'home' %}">Головна</a></li>
+            <li><a href="{% url 'shop_page' %}">Товари</a></li>
+            <li><a href="{% url 'register_pets' %}">Додати тварину</a></li>
+            <li><a href="{% url 'servises' %}">Послуги</a></li>
+            <li><a style="background-color: #EF4444; color: white;" href="{% url 'logout' %}">Вийти</a></li>
+        </ul>
+        <div class="nav-right">
+            <div class="avatar">UA</div>
+        </div>
+    </nav>
+
+    <div class="page">
+        <div class="page-header">
+            <h1>Пошук улюбленців 🔍</h1>
+            <p>Допоможіть повернути хвостиків додому або залиште заявку про зникнення.</p>
+        </div>
+
+        <div class="grid">
+            
+            <div class="sidebar-form">
+                <div class="card">
+                    <div class="card-title">📢 Сповістити про зникнення</div>
+                    
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        {% for field in form %}
+                        <div class="form-group">
+                            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                            {{ field }}
+                            
+                            {% if field.errors %}
+                            <div class="field-errors">
+                                {{ field.errors }}
+                            </div>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+
+                        <button type="submit" class="btn-submit">Опублікувати</button>
+                    </form>
+                    
+                </div>
+            </div>
+
+            <div class="feed-column">
+                
+                {% for pet in find_pets %}
+                <div class="pet-card" {% if pet.status == 'found' %}style="opacity: 0.85;"{% endif %}>
+                    
+                    {% if pet.status == 'lost' %}
+                        <span class="badge-status" style="background: #FEE2E2; color: var(--red);">Розшукується</span>
+                    {% else %}
+                        <span class="badge-status" style="background: #D1FAE5; color: var(--green);">Вдома 🎉</span>
+                    {% endif %}
+
+                    <div class="pet-photo">
+                        {% if pet.img %}
+                            <img src="{{ pet.img.url }}" alt="{{ pet.pet_name }}">
+                        {% else %}
+                            <img src="{% static 'main/images/no-image.png' %}" alt="Немає фото">
+                        {% endif %}
+                    </div>
+
+                    <div class="pet-info">
+                        <h2>{{ pet.pet_name }}</h2>
+                        <p class="breed"><span>{{ pet.pet_type }}</span></p>
+                        <p class="pet-description">
+                            {{ pet.discrp }}
+                        </p>
+                        <div class="meta-row">
+                            <div class="meta-chip location">📍 {{ pet.last_location }}</div>
+                            <div class="meta-chip date">📅 {{ pet.created_at|date:"d.m.Y" }}</div>
+                            <div class="meta-chip">📞 {{ pet.contacts }}</div>
+                        </div>
+
+                        {% if pet.user == request.user and pet.status == 'lost' %}
+                            <div style="margin-top: 16px;">
+                                   🐾 Мене знайдено!
+                                </a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                {% empty %}
+                <div class="card" style="text-align: center; width: 100%;">
+                    <p style="color: var(--muted);">Наразі немає активних оголошень. Усі хвостики вдома! 🥰</p>
+                </div>
+                {% endfor %}
+
+            </div>
+        </div>
+    </div>
+
+    <div class="bottom-bar">
+        <button class="tab-btn">
+            <div class="tab-icon">🏠</div>
+            <span>Головна</span>
+        </button>
+        <button class="tab-btn active">
+            <div class="tab-icon">🐾</div>
+            <span>Улюбленці</span>
+        </button>
+        <button class="tab-btn">
+            <div class="tab-icon">👤</div>
+            <span>Профіль</span>
+        </button>
+    </div>
+
+</body>
+
+</html>
