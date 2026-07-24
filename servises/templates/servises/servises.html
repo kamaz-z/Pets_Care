@@ -5,68 +5,355 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Наші Послуги | PetCare</title>
-    <link rel="stylesheet" href="{% static 'main/css/still.css' %}">
-    <link rel="stylesheet" href="{% static 'main/css/order.css' %}">
+    <title>Наші Спеціалісти | PetCare</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;800;900&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
 
     <style>
-        .services-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 20px;
-            padding: 40px;
+        :root {
+            --purple: #7C3AED;
+            --purple-light: #EDE9FE;
+            --purple-mid: #A78BFA;
+            --bg: #F5F3FF;
+            --white: #FFFFFF;
+            --text: #1C1C2E;
+            --muted: #6B7280;
+            --border: #E5E7EB;
+            --green: #10B981;
+            --card-shadow: 0 10px 30px rgba(124, 58, 237, 0.06);
         }
 
-        .service-card {
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            width: 300px;
-            overflow: hidden;
-            transition: transform 0.3s;
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            padding-bottom: 60px;
+        }
+
+        /* ── НАВІГАЦІЯ ── */
+        nav {
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            padding: 0 40px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 1px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .nav-logo {
+            font-family: 'Nunito', sans-serif;
+            font-weight: 900;
+            font-size: 1.4rem;
+            color: var(--purple);
+            text-decoration: none;
+        }
+
+        .nav-logo span {
+            color: var(--text);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 8px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--muted);
+            font-weight: 600;
+            font-size: 0.9rem;
+            padding: 8px 16px;
+            border-radius: 10px;
+            transition: 0.2s;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            background: var(--purple-light);
+            color: var(--purple);
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: var(--purple);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+        }
+
+        /* ── ХЕДЕР СТОРІНКИ ── */
+        .page-header {
             text-align: center;
+            padding: 50px 20px 30px;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .page-header h1 {
+            font-family: 'Nunito', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--text);
+            margin-bottom: 12px;
+        }
+
+        .page-header p {
+            color: var(--muted);
+            font-size: 1.1rem;
+            line-height: 1.5;
+        }
+
+        /* ── СІТКА КАРТОК ── */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        /* КАРТКА ПРАЦІВНИКА */
+        .expert-card {
+            background: var(--white);
+            border-radius: 24px;
+            border: 1px solid var(--border);
+            box-shadow: var(--card-shadow);
+            padding: 32px 24px 24px;
             display: flex;
             flex-direction: column;
+            align-items: center;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
         }
 
-        .service-card:hover {
-            transform: translateY(-10px);
+        .expert-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 15px 35px rgba(124, 58, 237, 0.12);
         }
 
-        .service-card img {
+        /* Фото-Аватар */
+        .expert-avatar-wrapper {
+            position: relative;
+            margin-bottom: 18px;
+        }
+
+        .expert-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 30px;
+            background: var(--purple-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 3px solid var(--white);
+            box-shadow: 0 4px 12px rgba(124, 58, 237, 0.1);
+            overflow: hidden;
+        }
+
+        .expert-avatar img {
             width: 100%;
-            height: 200px;
+            height: 100%;
             object-fit: cover;
         }
 
-        .service-content {
-            padding: 20px;
+        /* Силует за замовчуванням без емодзі */
+        .default-avatar {
+            width: 100%;
+            height: 100%;
+            background-color: #E5E7EB;
+            position: relative;
+        }
+        .default-avatar::before {
+            content: '';
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background: #9CA3AF;
+            border-radius: 50%;
+            top: 20px;
+            left: 30px;
+        }
+        .default-avatar::after {
+            content: '';
+            position: absolute;
+            width: 70px;
+            height: 40px;
+            background: #9CA3AF;
+            border-radius: 50% 50% 0 0;
+            bottom: -10px;
+            left: 15px;
         }
 
-        .service-price {
-            font-size: 1.2rem;
-            color: #4CAF50;
-            font-weight: bold;
-            margin: 10px 0;
+        /* Онлайн статус */
+        .status-dot {
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+            width: 16px;
+            height: 16px;
+            background: var(--green);
+            border: 3px solid var(--white);
+            border-radius: 50%;
         }
 
-        .btn-order {
-            display: inline-block;
-            margin-top: auto;
-            background: #4CAF50;
-            color: white;
-            padding: 10px 20px;
-            text-decoration: none;
-            border-radius: 5px;
+        /* Текстовий блок */
+        .expert-name {
+            font-family: 'Nunito', sans-serif;
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: var(--text);
+            margin-bottom: 6px;
+        }
+
+        /* Бейдж спеціалізації */
+        .spec-badge {
+            background: var(--purple-light);
+            color: var(--purple);
+            padding: 6px 14px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+        }
+
+        /* Маленьке резюме */
+        .expert-bio {
+            font-size: 0.9rem;
+            color: #55586b;
+            line-height: 1.6;
+            margin-bottom: 8px;
+        }
+        
+        .expert-personal-bio {
+            font-size: 0.9rem;
+            color: var(--muted);
+            line-height: 1.5;
+            font-style: italic;
             margin-bottom: 20px;
-            width: 80%;
-            align-self: center;
+            flex-grow: 1;
+        }
+
+        /* Прайс-зона */
+        .price-zone {
+            border-top: 1px dashed var(--border);
+            width: 100%;
+            padding-top: 16px;
+            margin-bottom: 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .price-label {
+            font-size: 0.85rem;
+            color: var(--muted);
+            font-weight: 500;
+        }
+
+        .price-value {
+            font-size: 1.25rem;
+            color: var(--green);
+            font-weight: 700;
+        }
+
+        /* Кнопка запису */
+        .btn-book {
+            width: 100%;
+            background: var(--purple);
+            color: var(--white);
+            padding: 14px;
+            border-radius: 14px;
+            text-decoration: none;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            transition: 0.2s;
+            box-shadow: 0 4px 12px rgba(124, 58, 237, 0.15);
+        }
+
+        .btn-book:hover {
+            background: #6D28D9;
+            box-shadow: 0 6px 20px rgba(124, 58, 237, 0.25);
+        }
+
+        /* Порожній стан */
+        .empty-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            color: var(--muted);
+            border: 1px solid var(--border);
+        }
+
+        /* ── СТИЛІЗАЦІЯ СЕЛЕКТУ ФІЛЬТРАЦІЇ ── */
+        .filter-wrapper {
+            margin-top: 25px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .custom-select {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            
+            font-family: 'DM Sans', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--purple);
+            
+            background-color: var(--white);
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%237C3AED' stroke-width='2.5'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19.5 8.25l-7.5 7.5-7.5-7.5'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            background-size: 16px;
+            
+            padding: 12px 45px 12px 20px;
+            border: 2px solid var(--purple-light);
+            border-radius: 16px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(124, 58, 237, 0.04);
+            transition: all 0.3s ease;
+            min-width: 280px;
+        }
+
+        .custom-select:hover {
+            border-color: var(--purple-mid);
+            box-shadow: 0 6px 20px rgba(124, 58, 237, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .custom-select:focus {
+            outline: none;
+            border-color: var(--purple);
+            box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.15);
         }
     </style>
 </head>
 
 <body>
+
     <nav>
         <div class="nav-logo">Pet<span>Care</span></div>
         <ul class="nav-links">
@@ -76,42 +363,83 @@
             <li><a href="{% url 'servises' %}" class="active">Послуги</a></li>
         </ul>
         <div class="nav-right">
-            <button class="notif-btn">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="2.2"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
-                    <path d="M13.73 21a2 2 0 0 1-3.46 0" />
-                </svg>
-                <span class="notif-dot"></span>
-            </button>
             <div class="avatar">Ол</div>
         </div>
     </nav>
 
-    <h1 style="text-align: center; margin-top: 30px; color: white;">Наші послуги для улюбленців</h1>
+    <div class="page-header">
+        <h1>Наші Спеціалісти</h1>
+        <p>Оберіть професіонала, який подбає про здоров'я та комфорт вашого улюбленця. Запис в один клік!</p>
+        
+        <div class="filter-wrapper">
+            <select id="sklad-select" class="custom-select" onchange="filterServices(this.value)">
+                <option value="">✨ Вибрати спеціаліста</option>
+                {% for service in items %}
+                    {% with service_id_str=service.id|slugify %}
+                        <option value="{{ service.id }}" {% if chosen_service_id == service_id_str %}selected{% endif %}>
+                            {{ service.name }}
+                        </option>
+                    {% endwith %}
+                {% endfor %}
+            </select>
+        </div>
+    </div>
 
-    <div class="services-container">
-        {% for item in items %}
-        <div class="service-card">
-            {% if item.img %}
-            <img src="{{ item.img.url }}" alt="{{ item.name }}">
-            {% else %}
-            <img src="{% static 'main/images/no-image.png' %}" alt="Немає фото">
-            {% endif %}
+    <div class="team-grid">
+        {% for employee in employees %}
+        <div class="expert-card">
 
-            <div class="service-content">
-                <h3>{{ item.name }}</h3>
-                <p>{{ item.discrp }}</p>
-                <div class="service-price">{{ item.price }} грн</div>
+            <div class="expert-avatar-wrapper">
+                <div class="expert-avatar">
+                    {% if employee.img %}
+                        <img src="{{ employee.img.url }}" alt="{{ employee.name }}">
+                    {% else %}
+                        <div class="default-avatar"></div>
+                    {% endif %}
+                </div>
+                <div class="status-dot"></div>
             </div>
 
-            <a href="{% url 'order_service' %}" class="btn-order">Замовити</a>
+            <h3 class="expert-name">{{ employee.name }}</h3>
+            <span class="spec-badge">{{ employee.profession.name }}</span>
+
+            <p class="expert-bio">
+                <strong>Послуга:</strong> {{ employee.profession.discrp }}
+            </p>
+            
+            <p class="expert-personal-bio">
+                « {{ employee.descrp }} »
+            </p>
+
+            <div class="price-zone">
+                <span class="price-label">Вартість послуги:</span>
+                <span class="price-value">{{ employee.price }} грн</span>
+            </div>
+
+            <a href="{% url 'order_service_with_employee' employee.profession.id employee.id %}" class="btn-book">
+                Записатись на прийом
+            </a>
+
         </div>
         {% empty %}
-        <p>Наразі послуг немає. Зайдіть пізніше!</p>
+        <div class="empty-state">
+            <h3>Співробітників не знайдено</h3>
+            <p>Спробуйте змінити фільтр або додайте нових працівників через адмінку Django.</p>
+        </div>
         {% endfor %}
     </div>
 
-</body>
+    <script>
+        function filterServices(serviceId) {
+            const currentUrl = new URL(window.location.href);
+            if (serviceId) {
+                currentUrl.searchParams.set('service_filter', serviceId);
+            } else {
+                currentUrl.searchParams.delete('service_filter');
+            }
+            window.location.href = currentUrl.toString();
+        }
+    </script>
 
+</body>
 </html>

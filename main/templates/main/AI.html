@@ -1,11 +1,367 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uk">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>AI Помічник | PetCare</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;800;900&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --purple: #7C3AED;
+            --purple-light: #EDE9FE;
+            --purple-mid: #A78BFA;
+            --bg: #F5F3FF;
+            --white: #FFFFFF;
+            --text: #1C1C2E;
+            --muted: #6B7280;
+            --border: #E5E7EB;
+            --chat-user: #7C3AED;
+            --chat-ai: #FFFFFF;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden; /* Щоб сторінка не скролилась, а скролився тільки чат */
+        }
+
+        /* ── НАВІГАЦІЯ ── */
+        nav {
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            padding: 0 40px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            z-index: 10;
+            box-shadow: 0 1px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .nav-logo {
+            font-family: 'Nunito', sans-serif;
+            font-weight: 900;
+            font-size: 1.4rem;
+            color: var(--purple);
+            text-decoration: none;
+        }
+
+        .nav-logo span {
+            color: var(--text);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 8px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--muted);
+            font-weight: 600;
+            font-size: 0.9rem;
+            padding: 8px 16px;
+            border-radius: 10px;
+            transition: 0.2s;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            background: var(--purple-light);
+            color: var(--purple);
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: var(--purple);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+        }
+
+        /* ── КОНТЕЙНЕР ЧАТУ ── */
+        .chat-container {
+            flex: 1;
+            max-width: 850px;
+            width: 100%;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            background: transparent;
+            height: calc(100vh - 64px);
+            position: relative;
+        }
+
+        /* Шапка всередині чату */
+        .chat-header {
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .ai-status-avatar {
+            width: 45px;
+            height: 45px;
+            background: var(--purple-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            border: 2px solid var(--white);
+            box-shadow: 0 4px 10px rgba(124, 58, 237, 0.1);
+        }
+
+        .chat-header-info h2 {
+            font-family: 'Nunito', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 800;
+        }
+
+        .chat-header-info p {
+            font-size: 0.8rem;
+            color: #10B981;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .chat-header-info p::before {
+            content: '';
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: #10B981;
+            border-radius: 50%;
+        }
+
+        /* ЗОНА ПОВІДОМЛЕНЬ (СКРОЛЛ) */
+        .messages-box {
+            flex: 1;
+            padding: 24px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            padding-bottom: 100px; /* Запас знизу, щоб текст не перекривався формою введення */
+        }
+
+        /* Скроллбар */
+        .messages-box::-webkit-scrollbar {
+            width: 6px;
+        }
+        .messages-box::-webkit-scrollbar-thumb {
+            background-color: var(--purple-mid);
+            border-radius: 10px;
+        }
+
+        /* ПОВІДОМЛЕННЯ (БАЗОВИЙ КЛАС) */
+        .message {
+            max-width: 70%;
+            padding: 14px 18px;
+            border-radius: 20px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            word-wrap: break-word;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Повідомлення від користувача */
+        .message.user-msg {
+            background: var(--chat-user);
+            color: var(--white);
+            align-self: flex-end;
+            border-bottom-right-radius: 4px; /* Красивий куточок хвоста месенджера */
+        }
+
+        /* Повідомлення від AI */
+        .message.ai-msg {
+            background: var(--chat-ai);
+            color: var(--text);
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+            border: 1px solid var(--border);
+        }
+
+        /* ── НИЖНЯ ПАНЕЛЬ ВВЕДЕННЯ ТЕКСТУ ── */
+        .chat-input-area {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            background: var(--white);
+            padding: 10px 14px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            box-shadow: 0 10px 25px rgba(124, 58, 237, 0.08);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .chat-form {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .chat-input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 1rem;
+            color: var(--text);
+            padding: 10px 5px;
+            background: transparent;
+        }
+
+        .chat-input::placeholder {
+            color: var(--muted);
+        }
+
+        .btn-send {
+            background: var(--purple);
+            color: var(--white);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 14px;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 4px 10px rgba(124, 58, 237, 0.2);
+        }
+
+        .btn-send:hover {
+            background: #6D28D9;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 14px rgba(124, 58, 237, 0.3);
+        }
+
+        /* Порожній стан чату */
+        .chat-empty {
+            text-align: center;
+            margin: auto;
+            max-width: 400px;
+            color: var(--muted);
+        }
+        .chat-empty h3 {
+            font-family: 'Nunito', sans-serif;
+            color: var(--text);
+            margin-bottom: 8px;
+            font-size: 1.3rem;
+        }
+    </style>
 </head>
+
 <body>
-    <h1>тут буде АІ чат</h1>
+
+    <nav>
+        <div class="nav-logo">Pet<span>Care</span></div>
+        <ul class="nav-links">
+            <li><a href="{% url 'home' %}">Головна</a></li>
+            <li><a href="{% url 'shop_page' %}">Товари</a></li>
+            <li><a href="{% url 'register_pets' %}">Додати тварину</a></li>
+            <li><a href="{% url 'servises' %}">Послуги</a></li>
+            <li><a href="#" class="active">AI Ветеринар</a></li>
+        </ul>
+        <div class="nav-right">
+            <div class="avatar">Ол</div>
+        </div>
+    </nav>
+
+    <div class="chat-container">
+        
+        <div class="chat-header">
+            <div class="ai-status-avatar">🤖</div>
+            <div class="chat-header-info">
+                <h2>Вет-Асистент PetCare</h2>
+                <p>онлайн (ШІ на базі Gemini)</p>
+            </div>
+        </div>
+
+        <div class="messages-box" id="messagesBox">
+            {% if chat_history %}
+                {% for message in chat_history %}
+                    <div class="message {% if message.is_from_user %}user-msg{% else %}ai-msg{% endif %}">
+                        {{ message.text|linebreaksbr }}
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="chat-empty" id="chatEmptyState">
+                    <h3>Привіт! Я твій AI-помічник 🐾</h3>
+                    <p>Запитай мене про що завгодно: який корм обрати для кошеняти, як часто вигулювати собаку або що робити, якщо улюбленець сумує.</p>
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="chat-input-area">
+            <form method="post" class="chat-form" id="chatForm">
+                {% csrf_token %}
+                <input type="text" name="message_text" class="chat-input" placeholder="Напишіть ваше запитання сюди..." required autocomplete="off" id="chatInputField">
+                <button type="submit" class="btn-send">Надіслати</button>
+            </form>
+        </div>
+
+    </div>
+
+    <script>
+        const messagesBox = document.getElementById('messagesBox');
+        const chatForm = document.getElementById('chatForm');
+        const inputField = document.getElementById('chatInputField');
+
+        // Функція, яка автоматично опускає скроллбокс до самого низу
+        function scrollToBottom() {
+            messagesBox.scrollTop = messagesBox.scrollHeight;
+        }
+
+        // Викликаємо скролл при завантаженні сторінки (щоб бачити останні повідомлення)
+        window.onload = function() {
+            scrollToBottom();
+            inputField.focus(); // Автофокус на поле введення
+        };
+
+        // Невеличкий ефект: при натисканні "Надіслати" кнопка візуально міняє текст на "Думаю...", щоб юзер бачив, що процес пішов
+        chatForm.onsubmit = function() {
+            const sendBtn = chatForm.querySelector('.btn-send');
+            sendBtn.innerText = "Думаю...";
+            sendBtn.style.opacity = "0.7";
+            sendBtn.style.pointerEvents = "none";
+        };
+    </script>
+
 </body>
 </html>

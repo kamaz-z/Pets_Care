@@ -20,7 +20,7 @@ class Pets(models.Model):
     img = models.ImageField(upload_to='pets_photos/', verbose_name="Фото улюбленця", null=True, blank=True)
     def __str__(self):
         return self.name
-    
+
     class Meta:
         verbose_name="Тварини"
 
@@ -56,8 +56,3 @@ class Find_Home(models.Model):
 
     class Meta:
         verbose_name="Шукають домівку"
-
-
-
-
-     

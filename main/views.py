@@ -1,9 +1,12 @@
 from django.shortcuts import render,redirect
 from .form import Pets_Register_Form ,Register_Form,Finf_Pet_Form
 from .models import Pets,find_Pets,Find_Home
+from servises.models import ChatMessage
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+import google.generativeai as genai
+
 
 
 def index(request):
@@ -98,12 +101,65 @@ def find_pets(request):
         'find_pets': lost_pets_list
     })
 
+
+
+
+API_KEY = 'AQ.Ab8RN6K3-fUe4sbnnrdDKw8RC6UwhCBG46YUsr1YJo5wlRpiVQ'
+genai.configure(api_key=API_KEY)
+
 @login_required(login_url='login')
-def ai(request):
-    return render(request,'main/AI.html')
+def ai_chat_page(request):
+    # Отримуємо історію повідомлень поточного користувача
+    chat_history = ChatMessage.objects.filter(user=request.user).order_by('created_at')
+
+    if request.method == "POST":
+        # Беремо текст з input поля (name="message_text")
+        user_text = request.POST.get('message_text', '').strip()
+        
+        if user_text:
+            # КРОК A: Спочатку ОБОВ'ЯЗКОВО зберігаємо повідомлення користувача в базу
+            ChatMessage.objects.create(
+                user=request.user,
+                text=user_text,
+                is_from_user=True
+            )
+            
+            # КРОК Б: Налаштовуємо модель
+            model = genai.GenerativeModel(
+                model_name="models/gemini-2.5-flash",
+                system_instruction="Ти — ШІ-ветеринар клініки PetCare. Відповідай українською мовою."
+            )
+            
+            try:
+                # Намагаємось отримати відповідь від Google
+                response = model.generate_content(user_text)
+                ai_response_text = response.text
+            except Exception as e:
+                # Якщо злетів ключ або немає інтернету — виводимо реальну помилку для відладки
+                ai_response_text = f"Помилка ШІ: {str(e)}. Перевірте правильність API-ключа."
+
+            # КРОК В: Зберігаємо відповідь (або текст помилки) як повідомлення від бота
+            ChatMessage.objects.create(
+                user=request.user,
+                text=ai_response_text,
+                is_from_user=False
+            )
+            
+            # Перенаправляємо на ту саму сторінку, щоб скинути POST-дані
+            return redirect(request.path) 
+
+    return render(request, 'main/AI.html', {'chat_history': chat_history})
+
 
 def find_home(request):
     pets = Find_Home.objects.all()
     return render(request,'main/find_home.html',{'pets':pets})
+
+def pricing(request):
+    return render(request,'main/pricing.html')
+
+
+def map(request):
+    return render(request,'main/map.html')
 
 

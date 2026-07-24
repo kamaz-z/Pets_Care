@@ -12,33 +12,32 @@
 
 <body>
     <div class="reg-card">
-    <div class="reg-header">
-        <div class="logo">Pet<span>Care</span></div>
-        <h1>Замовити послугу</h1>
-        <p>Оберіть зручний час та послугу</p>
+        <div class="reg-header">
+            <div class="logo">Pet<span>Care</span></div>
+            <h1>Замовити послугу</h1>
+            <p>Оберіть зручний час та послугу</p>
+        </div>
+
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="input-group">
+                <label>Послуга</label>
+                {{ form.service }}
+            </div>
+
+            <div class="input-group">
+                <label>Співробітник</label>
+                {{ form.employee }}
+            </div>
+
+            <div class="input-group">
+                <label>Дата візиту</label>
+                {{ form.order_date }}
+            </div>
+            <button type="submit" class="btn-reg">Підтвердити запис</button>
+        </form>
     </div>
-
-    <form method="post">
-        {% csrf_token %}
-        
-        <div class="input-group">
-            <label>Оберіть послугу (гамбургер)</label>
-            {{ form.service }}
-        </div>
-
-        <div class="input-group">
-            <label>Ваш номер телефону</label>
-            {{ form.customer_phone }}
-        </div>
-
-        <div class="input-group">
-            <label>Дата візиту</label>
-            {{ form.order_date }}
-        </div>
-
-        <button type="submit" class="btn-reg">Підтвердити запис</button>
-    </form>
-</div>
 </body>
 
 </html>

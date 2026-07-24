@@ -1,0 +1,74 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'main/css/order.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/cart.css' %}">
+    <title>Кошик | PetCare</title>
+</head>
+
+<body>
+    <nav>
+        <div class="nav-logo">Pet<span>Care</span></div>
+        <ul class="nav-links">
+            <li><a href="{% url 'home' %}">Головна</a></li>
+            <li><a href="{% url 'shop_page' %}">Товари</a></li>
+            <li><a href="{% url 'register_pets' %}">Додати тварину</a></li>
+            <li><a href="{% url 'servises' %}">Послуги</a></li>
+            {% if user.is_authenticated %}
+            <li><a style="background-color: #EF4444;" href="{% url 'logout' %}">Вийти</a></li>
+            {% else %}
+            <li><a style="background-color: var(--purple);color: #F5F3FF;" href="{% url 'register' %}">Увійти</a></li>
+            {% endif %}
+        </ul>
+        <div class="nav-right">
+            <div class="cart-icon" style="background-color:var(--purple); border-radius: 20px; padding: 5px 10px;">
+                <a style="text-decoration: none;color: #F5F3FF;" href="{% url 'cart_page' %}" class="active">
+                    🛒 Кошик (<span id="cart-count">0</span>)
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="cart-page">
+        <div class="cart-container">
+            <h1 class="cart-title">Ваш кошик</h1>
+
+            <div id="cart-items"></div>
+
+            <div class="cart-summary">
+                <span>Разом:</span>
+                <span id="total-price">0 грн</span>
+            </div>
+
+            <form id="checkout-form" class="order-form" onsubmit="submitOrder(event)">
+                {% csrf_token %}
+                <h3>Дані для доставки</h3>
+
+                <div class="form-group">
+                    <label for="full_name">Ваше ім'я та прізвище</label>
+                    <input type="text" id="full_name" required placeholder="Іван Іванов">
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Номер телефону</label>
+                    <input type="tel" id="phone" required placeholder="+380991234567">
+                </div>
+
+                <div class="form-group">
+                    <label for="address">Адреса доставки</label>
+                    <input type="text" id="address" required placeholder="м. Київ, вул. Хрещатик 1, кв. 10">
+                </div>
+
+                <button type="submit" class="btn-checkout">Оформити замовлення</button>
+            </form>
+        </div>
+    </main>
+
+    <script src="{% static 'main/js/cart.js' %}"></script>
+</body>
+
+</html>

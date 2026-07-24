@@ -17,6 +17,11 @@
             <li><a href="{% url 'shop_page' %}" class="active">Товари</a></li>
             <li><a href="{% url 'register_pets' %}">Додати тварину</a></li>
             <li><a href="{% url 'servises' %}">Послуги</a></li>
+            {% if user.is_authenticated %}
+            <li><a style="background-color: #EF4444;" href="{% url 'logout' %}">Вийти</a></li>
+            {% else %}
+            <li><a style="background-color: var(--purple);color: #F5F3FF;" href="{% url 'register' %}">Увійти</a></li>
+            {% endif %}
         </ul>
         <div class="nav-right">
             <button class="notif-btn">
@@ -27,15 +32,15 @@
                 </svg>
                 <span class="notif-dot"></span>
             </button>
-            <div class="avatar">Ол</div>
+            <div class="cart-icon" style="background-color:var(--purple); border-radius: 20px ; padding: 5px 10px;">
+                <a style="text-decoration: none;color: #F5F3FF;" href="{% url 'cart_page' %}">
+                    🛒 Кошик (<span id="cart-count">0</span>)
+                </a>
+            </div>
         </div>
     </nav>
 
     <main>
-        <div class="main-header">
-            <a href="#"></a>
-        </div>
-
         <div class="product-grid">
             {% for product in products %}
             <article class="product-card">
@@ -64,9 +69,20 @@
                         <p>{{ product.discrp|truncatechars:60 }}</p>
                     </div>
 
-                    <div class="product-actions">
-                        <button class="buy-button">В кошик</button>
+                    <div class="quantity-controls" style="display: flex; align-items: center; gap: 8px; margin: 10px 0;">
+                        <button type="button" onclick="changeQuantity(this, -1)">-</button>
+                        <span class="qty-number">1</span>
+                        <button type="button" onclick="changeQuantity(this, 1)" data-max="{{ product.count }}">+</button>
                     </div>
+
+                    <button class="buy-button" onclick="addToCart(this)"
+                            data-id="{{ product.id }}"
+                            data-name="{{ product.name }}"
+                            data-price="{{ product.price }}"
+                            data-img="{% if product.img %}{{ product.img.url }}{% endif %}"
+                            {% if product.count <= 0 %}disabled{% endif %}>
+                        {% if product.count > 0 %}В кошик{% else %}Немає в наявності{% endif %}
+                    </button>
                 </div>
             </article>
             {% empty %}
@@ -76,6 +92,8 @@
             {% endfor %}
         </div>
     </main>
+
+    <script src="{% static 'main/js/cart.js' %}"></script>
 </body>
 
 </html>

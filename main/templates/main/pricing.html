@@ -1,0 +1,58 @@
+{% load static %}
+<!DOCTYPE html> 
+<html lang="uk">
+<head> 
+  <meta charset="UTF-8"> 
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> 
+  <title>Тарифи | Турбота про улюбленця</title> 
+  <link rel="stylesheet" href="{% static 'main/css/style.css' %}"> 
+</head> 
+<body> 
+
+  <main class="pricing-container">
+    <h1>Виберіть тариф для вашого хвостика</h1>
+    <p class="pricing-subtitle">Дбайте про здоров'я та комфорт тварин без зайвого клопоту</p>
+
+    <div class="pricing-table">
+      
+      <!-- ТАРИФ БАЗОВИЙ -->
+      <div class="pricing-option basic-plan">
+        <h2>Basic</h2>
+        <p class="plan-description">Для дбайливих господарів з 1-3 улюбленцями</p>
+        <div class="price">Безкоштовно</div>
+        
+        <ul>
+          <li><strong>До 3 улюбленців</strong> у профілі</li>
+          <li>Цифровий ветпаспорт + автонагадування про щеплення</li>
+          <li>Онлайн-запис до ветеринарів, грумерів та кінологів</li>
+          <li>Доступ до перевірених пет-сіттерів зі страхуванням</li>
+          <li>Інтерактивна карта pet-friendly локацій</li>
+          <li>Пошук загублених тварин та стрічка новин</li>
+        </ul>
+        
+        <button class="btn-basic"><a href="{% url 'home' %}">Почати безкоштовно</a></button>
+      </div>
+      
+      <!-- ТАРИФ ПРЕМІУМ -->
+      <div class="pricing-option premium-plan popular">
+        
+        <h2>Premium</h2>
+        <p class="plan-description">Для професійного догляду, великих пет-родин та розплідників</p>
+        <div class="price">$19.99 <span>/ місяць</span></div>
+        
+        <p class="include-note">Усе, що є в Basic, а також:</p>
+        <ul>
+          <li><strong>Безлімітна</strong> кількість тварин у реєстрі</li>
+          <li><strong>Smart Pet Wallet</strong> — розумний фінансовий трекер витрат</li>
+          <li><strong>AI-асистент 24/7</strong> (аналіз поведінки, персональні поради з догляду)</li>
+          <li><strong>Знижка 10%</strong> на всі товари магазинів-партнерів</li>
+        </ul>
+        
+        <button class="btn-premium">Спробувати Premium</button>
+      </div>
+
+    </div>
+  </main>
+
+</body>
+</html>

@@ -1,64 +1,52 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .form import Order_Servises_form
-from django.contrib import messages
-from .models import Servises,Order
-from datetime import datetime,timedelta
-from django.utils import timezone
-from django.contrib.auth.models import User
-from email.mime.text import MIMEText
-import smtplib
+from .models import Servises, Employee, Order
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
+
 
 @login_required(login_url='login')
 def servises_page(request):
-    # Отримуємо всі послуги з бази даних
     items = Servises.objects.all()
-    return render(request, 'servises/servises.html', {'items': items})
+    # Базовий запит — беремо всіх
+    employees = Employee.objects.select_related('profession').all()
+    
+    # Отримуємо ID вибраної послуги з URL (наприклад: ?service_filter=2)
+    chosen_service_id = request.GET.get('service_filter')
+    
+    if chosen_service_id:
+        # Фільтруємо працівників, у яких ID професії збігається з вибраним
+        employees = employees.filter(profession_id=chosen_service_id)
+
+    return render(request, 'servises/servises.html', {
+        'items': items,
+        'employees': employees,
+        'chosen_service_id': chosen_service_id, # Передаємо назад, щоб зберегти вибір у селекті
+    })
+
+
 @login_required(login_url='login')
-def order_page(request):
+def order_page(request, service_id=None, employee_id=None):
+    initial_data = {}
+    
+    # Якщо прийшли динамічні параметри з URL — підтягуємо дефолтні значення для форми
+    if service_id and employee_id:
+        service_obj = get_object_or_404(Servises, id=service_id)
+        employee_obj = get_object_or_404(Employee, id=employee_id)
+        initial_data = {
+            'service': service_obj,
+            'employee': employee_obj
+        }
+
     if request.method == 'POST':
         form = Order_Servises_form(request.POST)
         if form.is_valid():
-            form.save()
-            messages.success(request, 'Дякуємо! Замовлення прийнято, ми вам зателефонуємо.')
+            order = form.save(commit=False)
+            order.user = request.user
+            order.save()
             return redirect('servises')
     else:
-        form = Order_Servises_form()
-
+        # Передаємо initial дані у форму, щоб селекти стали вибраними самі!
+        form = Order_Servises_form(initial=initial_data)
     
     return render(request, 'servises/order_servises.html', {'form': form})
-
-def order_msg(request):
-    items_order = Order.objects.all()
-    now_t =  timezone.now()
-
-    for date in items_order:
-        if now_t - date.order_date  <= timedelta(hours=1):
-            print("надсиалння повідомлення")
-        elif now_t - date.order_date  <= timedelta(hours=5):
-            print("надсиалння повідомлення")    
-            gmail_msg(1)
-        elif now_t - date.order_date <= timedelta(days=1):
-            print("надсиалння повідомлення")
-            gmail_msg(24)
-       
-    return render(request,"servises/order_servises.html")
-
-def gmail_msg(time):
-    user = User
-    items = Order.objects.all()
-    for item in items:
-        print(item.service)
-    try:
-        msg = MIMEText(f'{user.username} Вітаю до вашого запису залишилось {time} годин \n на запис до {item.service}', 'plain', 'utf-8')
-        msg['Subject'] = f'Запис до {item.service}'
-        msg['From'] = 'vladyslav.hadiak.kb.2024@lpnu.ua'
-        msg['To'] = user.email
-        server = smtplib.SMTP('smtp.gmail.com', 587)
-        server.starttls()
-        server.login('vladyslav.hadiak.kb.2024@lpnu.ua', 'lzjn iquu xjlz korb')
-        server.sendmail('vladyslav.hadiak.kb.2024@lpnu.ua', user.email, msg.as_string())
-        server.quit()
-    except Exception as e:
-        print(e)
-    return time
