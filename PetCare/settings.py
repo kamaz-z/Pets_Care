@@ -10,24 +10,36 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
+import os
 from pathlib import Path
+
+from django.core.exceptions import ImproperlyConfigured
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Читаємо файл .env (лежить поруч із manage.py) і кладемо його значення в os.environ.
+# Якщо .env немає (наприклад, на сервері змінні задані інакше) — просто нічого не станеться.
+load_dotenv(BASE_DIR / '.env')
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-%&2cat@3cc_7mnmr_apx$y_+1k5uv7ve^b32c1&kf@tq_b0*@2'
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
+if not SECRET_KEY:
+    raise ImproperlyConfigured(
+        'Не задано DJANGO_SECRET_KEY. Скопіюйте .env.example у .env і заповніть значення.'
+    )
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# У .env усе — рядки, тому "False" треба порівнювати як текст. Якщо змінної немає — DEBUG вимкнено.
+DEBUG = os.getenv('DJANGO_DEBUG', 'False').lower() in ('1', 'true', 'yes')
 
-ALLOWED_HOSTS = []
-
-import os
+# У .env: DJANGO_ALLOWED_HOSTS=127.0.0.1,localhost  (через кому, без пробілів)
+ALLOWED_HOSTS = [h.strip() for h in os.getenv('DJANGO_ALLOWED_HOSTS', '').split(',') if h.strip()]
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -123,3 +135,8 @@ LOGIN_URL = 'login'
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# Ключі зовнішніх сервісів (значення — у .env)
+NOVAPOST_API_KEY = os.getenv('NOVAPOST_API_KEY', '')
+NOVAPOST_BASE_URL = os.getenv('NOVAPOST_BASE_URL', 'https://api.novapost.com/v.1.0')
+GEMINI_API_KEY = os.getenv('GEMINI_API_KEY', '')

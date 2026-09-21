@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PetCare | Пошук улюбленців</title>
+    <title>PetCare | Шукають домівку</title>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -293,8 +293,8 @@
 
     <div class="page">
         <div class="page-header">
-            <h1>Пошук улюбленців 🔍</h1>
-            <p>Допоможіть знайти хвостикам дім. Усі оголошення моделюються адміністрацією.</p>
+            <h1>Шукають домівку 🏠</h1>
+            <p>Допоможіть знайти хвостикам дім. Усі оголошення модеруються адміністрацією.</p>
         </div>
 
         <div class="feed-column">
@@ -303,7 +303,6 @@
                 <div class="pet-photo">
                     {% if pet.img %}
                         <img src="{{ pet.img.url }}" alt="{{ pet.name }}">
-                    --
                     {% else %}
                         <img src="{% static 'main/images/no-image.png' %}" alt="Немає фото">
                     {% endif %}

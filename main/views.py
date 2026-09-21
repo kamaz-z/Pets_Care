@@ -3,9 +3,12 @@ from .form import Pets_Register_Form ,Register_Form,Finf_Pet_Form
 from .models import Pets,find_Pets,Find_Home
 from servises.models import ChatMessage
 from django.contrib.auth import login, authenticate, logout
-from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django.conf import settings
 import google.generativeai as genai
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 
@@ -104,8 +107,9 @@ def find_pets(request):
 
 
 
-API_KEY = 'AQ.Ab8RN6K3-fUe4sbnnrdDKw8RC6UwhCBG46YUsr1YJo5wlRpiVQ'
-genai.configure(api_key=API_KEY)
+# Ключ береться з .env через settings (див. GEMINI_API_KEY)
+if settings.GEMINI_API_KEY:
+    genai.configure(api_key=settings.GEMINI_API_KEY)
 
 @login_required(login_url='login')
 def ai_chat_page(request):
@@ -134,9 +138,10 @@ def ai_chat_page(request):
                 # Намагаємось отримати відповідь від Google
                 response = model.generate_content(user_text)
                 ai_response_text = response.text
-            except Exception as e:
-                # Якщо злетів ключ або немає інтернету — виводимо реальну помилку для відладки
-                ai_response_text = f"Помилка ШІ: {str(e)}. Перевірте правильність API-ключа."
+            except Exception:
+                # Справжню помилку пишемо в лог сервера (термінал), а не показуємо користувачу
+                logger.exception("Помилка запиту до Gemini")
+                ai_response_text = "Не вдалося отримати відповідь від ШІ. Спробуйте ще раз пізніше."
 
             # КРОК В: Зберігаємо відповідь (або текст помилки) як повідомлення від бота
             ChatMessage.objects.create(

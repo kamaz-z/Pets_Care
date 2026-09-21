@@ -462,12 +462,6 @@
                             <div class="meta-chip date">📅 {{ pet.created_at|date:"d.m.Y" }}</div>
                             <div class="meta-chip">📞 {{ pet.contacts }}</div>
                         </div>
-
-                        {% if pet.user == request.user and pet.status == 'lost' %}
-                            <div style="margin-top: 16px;">
-                                </a>
-                            </div>
-                        {% endif %}
                     </div>
                 </div>
                 {% empty %}

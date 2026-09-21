@@ -8,6 +8,49 @@
     <link rel="stylesheet" href="{% static 'main/css/order.css' %}">
     <link rel="stylesheet" href="{% static 'main/css/cart.css' %}">
     <title>Кошик | PetCare</title>
+    <style>
+        /* Стилі для випадаючого списку міст Нової Пошти */
+        .city-autocomplete-wrapper {
+            position: relative;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: #ffffff;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-top: 4px;
+        }
+
+        .dropdown-item {
+            padding: 10px 14px;
+            cursor: pointer;
+            font-size: 14px;
+            color: #374151;
+            transition: background-color 0.15s ease;
+        }
+
+        .dropdown-item:hover {
+            background-color: #f3f4f6;
+            color: var(--purple, #6b21a8);
+        }
+
+        .dropdown-item.empty {
+            color: #9ca3af;
+            cursor: default;
+        }
+
+        .dropdown-item.empty:hover {
+            background-color: transparent;
+        }
+    </style>
 </head>
 
 <body>
@@ -44,23 +87,33 @@
                 <span id="total-price">0 грн</span>
             </div>
 
-            <form id="checkout-form" class="order-form" onsubmit="submitOrder(event)">
+            <form id="checkout-form" class="order-form">
                 {% csrf_token %}
                 <h3>Дані для доставки</h3>
 
                 <div class="form-group">
                     <label for="full_name">Ваше ім'я та прізвище</label>
-                    <input type="text" id="full_name" required placeholder="Іван Іванов">
+                    <input type="text" id="full_name" name="full_name" required placeholder="Іван Іванов">
                 </div>
 
                 <div class="form-group">
                     <label for="phone">Номер телефону</label>
-                    <input type="tel" id="phone" required placeholder="+380991234567">
+                    <input type="tel" id="phone" name="phone" required placeholder="+380991234567">
+                </div>
+
+                <!-- Блок вибору Нової Пошти -->
+                <div class="form-group city-autocomplete-wrapper">
+                    <label for="city-input">Місто доставки (Нова Пошта)</label>
+                    <input type="text" id="city-input" placeholder="Почніть вводити місто..." autocomplete="off" required>
+                    <div id="city-dropdown" class="dropdown-menu" style="display: none;"></div>
+                    <input type="hidden" id="selected-city-name">
                 </div>
 
                 <div class="form-group">
-                    <label for="address">Адреса доставки</label>
-                    <input type="text" id="address" required placeholder="м. Київ, вул. Хрещатик 1, кв. 10">
+                    <label for="warehouse-select">Відділення або поштомат</label>
+                    <select id="warehouse-select" disabled required>
+                        <option value="">Спочатку оберіть місто</option>
+                    </select>
                 </div>
 
                 <button type="submit" class="btn-checkout">Оформити замовлення</button>

@@ -244,6 +244,240 @@ class Find_Home(models.Model):
         verbose_name="Шукають домівку"
 
 ================================================
+FILE: main\static\main\css\cart.css
+================================================
+
+:root {
+    --purple: #7C3AED;
+    --purple-light: #F5F3FF;
+    --text-dark: #1F2937;
+    --text-muted: #6B7280;
+    --border: #E5E7EB;
+}
+
+.cart-page {
+    background: var(--purple-light);
+    min-height: 80vh;
+    padding: 40px 20px;
+}
+
+.cart-container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 32px;
+    border-radius: 20px;
+    box-shadow: 0 8px 24px rgba(124, 58, 237, 0.08);
+}
+
+.cart-title {
+    margin: 0 0 24px;
+    color: var(--text-dark);
+}
+
+/* --- Товар у кошику --- */
+
+.cart-item {
+    display: grid;
+    grid-template-columns: 60px 1fr auto auto;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.cart-item-img {
+    width: 60px;
+    height: 60px;
+    border-radius: 14px;
+    background: var(--purple-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    overflow: hidden;
+}
+
+.cart-item-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.cart-item-info h4 {
+    margin: 0 0 4px;
+    color: var(--text-dark);
+}
+
+.cart-item-info p {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+.quantity-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.quantity-controls button {
+    background: var(--purple-light);
+    color: var(--purple);
+    border: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 15px;
+    transition: background 0.15s;
+}
+
+.quantity-controls button:hover {
+    background: #EDE9FE;
+}
+
+.cart-item-total {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    justify-self: end;
+}
+
+.cart-item-total strong {
+    color: var(--text-dark);
+}
+
+.delete-btn {
+    background: #FEE2E2;
+    color: #EF4444;
+    border: none;
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: background 0.15s;
+}
+
+.delete-btn:hover {
+    background: #FCA5A5;
+    color: #fff;
+}
+
+/* --- Порожній кошик --- */
+
+.cart-empty {
+    text-align: center;
+    padding: 50px 0;
+    color: var(--text-muted);
+}
+
+.cart-empty-icon {
+    font-size: 48px;
+    margin-bottom: 12px;
+}
+
+.btn-link {
+    display: inline-block;
+    margin-top: 16px;
+    background: var(--purple);
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 22px;
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+/* --- Підсумок --- */
+
+.cart-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-top: 16px;
+    padding-top: 16px;
+}
+
+.cart-summary span:last-child {
+    color: var(--purple);
+}
+
+/* --- Форма оформлення --- */
+
+.order-form {
+    margin-top: 24px;
+    border-top: 2px dashed var(--purple);
+    padding-top: 24px;
+}
+
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: var(--text-dark);
+    font-size: 14px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    box-sizing: border-box;
+    font-size: 14px;
+    transition: border-color 0.15s;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--purple);
+}
+
+.btn-checkout {
+    background: var(--purple);
+    color: #fff;
+    border: none;
+    padding: 14px 24px;
+    font-weight: 700;
+    border-radius: 12px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 16px;
+    transition: background 0.15s;
+}
+
+.btn-checkout:hover {
+    background: #6D28D9;
+}
+
+.btn-checkout:disabled {
+    background: #C4B5FD;
+    cursor: not-allowed;
+}
+
+@media (max-width: 600px) {
+    .cart-item {
+        grid-template-columns: 44px 1fr;
+        row-gap: 10px;
+    }
+
+    .quantity-controls,
+    .cart-item-total {
+        grid-column: span 2;
+        justify-content: flex-start;
+    }
+}
+
+================================================
 FILE: main\static\main\css\order.css
 ================================================
 
@@ -913,6 +1147,68 @@ button:active {
     font-size: 2rem;
   }
 }
+
+================================================
+FILE: main\static\main\css\__init__.py
+================================================
+
+
+
+================================================
+FILE: main\static\main\js\cart.js
+================================================
+
+// Зчитування та відправка замовлення у cart.js
+document.getElementById('checkout-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    const cartItems = JSON.parse(localStorage.getItem('cart') || '[]');
+    if (cartItems.length === 0) {
+        alert('Ваш кошик порожній!');
+        return;
+    }
+
+    const cityName = document.getElementById('selected-city-name').value || document.getElementById('city-input').value.trim();
+    const warehouseName = document.getElementById('warehouse-select').value;
+
+    if (!cityName || !warehouseName) {
+        alert('Будь ласка, оберіть місто та відділення зі списку!');
+        return;
+    }
+
+    const payload = {
+        full_name: document.getElementById('full_name').value.trim(),
+        phone: document.getElementById('phone').value.trim(),
+        address: `м. ${cityName}, ${warehouseName}`,
+        items: cartItems.map(item => ({
+            id: item.id,
+            quantity: item.quantity
+        }))
+    };
+
+    fetch('/create-order/', { // ваш URL для create_order
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+        },
+        body: JSON.stringify(payload)
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.status === 'success') {
+            alert('Замовлення успішно створено!');
+            localStorage.removeItem('cart');
+            window.location.href = '/shop/';
+        } else {
+            alert('Помилка: ' + data.message);
+        }
+    })
+    .catch(err => {
+        console.error('Помилка при створенні замовлення:', err);
+        alert('Помилка з\'єднання з сервером');
+    });
+});
 
 ================================================
 FILE: main\static\main\js\main.js
@@ -2566,8 +2862,7 @@ FILE: main\templates\main\index.html
                         <div class="action-icon">🏠</div>
                         <span>шуакю дім</span>
                     </a>
-                    <a href="https://www.google.com.ua/maps/search/pet-friendly+%D0%B7%D0%B0%D0%BA%D0%BB%D0%B0%D0%B4%D0%B8+%D0%BB%D1%8C%D0%B2%D1%96%D0%B2/@49.8220062,24.0228549,12.96z?hl=ru&entry=ttu&g_ep=EgoyMDI2MDYxMC4wIKXMDSoASAFQAw%3D%3D"
-                        class="action-btn">
+                    <a href="{% url 'map' %}" class="action-btn">
                         <div class="action-icon">📍</div>
                         <span>Мапа</span>
                     </a>
@@ -2678,6 +2973,207 @@ FILE: main\templates\main\login.html
         </button>
 
     </div>
+</body>
+
+</html>
+
+================================================
+FILE: main\templates\main\map.html
+================================================
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Наші Клініки | PetCare</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;800;900&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --purple: #7C3AED;
+            --purple-light: #EDE9FE;
+            --purple-mid: #A78BFA;
+            --bg: #F5F3FF;
+            --white: #FFFFFF;
+            --text: #1C1C2E;
+            --muted: #6B7280;
+            --border: #E5E7EB;
+            --red: #EF4444;
+            --red-hover: #DC2626;
+            --card-shadow: 0 10px 30px rgba(124, 58, 237, 0.06);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        /* ── НАВІГАЦІЯ ── */
+        nav {
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            padding: 0 40px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 1px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .nav-logo {
+            font-family: 'Nunito', sans-serif;
+            font-weight: 900;
+            font-size: 1.4rem;
+            color: var(--purple);
+            text-decoration: none;
+        }
+
+        .nav-logo span {
+            color: var(--text);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--muted);
+            font-weight: 600;
+            font-size: 0.9rem;
+            padding: 8px 16px;
+            border-radius: 10px;
+            transition: 0.2s;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            background: var(--purple-light);
+            color: var(--purple);
+        }
+
+        /* Особливі кнопки входу/виходу в меню */
+        .nav-links .btn-auth {
+            color: var(--white) !important;
+            transition: 0.2s;
+        }
+        
+        .nav-links .btn-auth:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: var(--purple);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+        }
+
+        /* ── КОНТЕНТ СТОРІНКИ ── */
+        .page-container {
+            max-width: 1000px;
+            margin: 50px auto;
+            padding: 0 20px;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .page-header h1 {
+            font-family: 'Nunito', sans-serif;
+            font-size: 2.3rem;
+            font-weight: 900;
+            color: var(--text);
+            margin-bottom: 10px;
+        }
+
+        .page-header p {
+            color: var(--muted);
+            font-size: 1.05rem;
+        }
+
+        /* Контейнер для карти */
+        .map-wrapper {
+            background: var(--white);
+            padding: 15px;
+            border-radius: 24px;
+            border: 1px solid var(--border);
+            box-shadow: var(--card-shadow);
+            overflow: hidden;
+        }
+
+        .map-wrapper iframe {
+            display: block;
+            width: 100%;
+            height: 480px;
+            border: 0;
+            border-radius: 14px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <a href="{% url 'home' %}" class="nav-logo">Pet<span>Care</span></a>
+        <ul class="nav-links">
+            <li><a href="{% url 'home' %}">Головна</a></li>
+            <li><a href="{% url 'shop_page' %}">Товари</a></li>
+            <li><a href="{% url 'register_pets' %}">Додати тварину</a></li>
+            <li><a href="{% url 'servises' %}">Послуги</a></li>
+            
+            {% if user.is_authenticated %}
+                <li><a class="btn-auth" style="background-color: var(--red);" href="{% url 'logout' %}">Вийти</a></li>
+            {% else %}
+                <li><a class="btn-auth" style="background-color: var(--purple);" href="{% url 'register' %}">Увійти</a></li>
+            {% endif %}
+        </ul>
+        <div class="nav-right">
+            <div class="avatar">UA</div>
+        </div>
+    </nav>
+
+    <div class="page-container">
+        
+        <div class="page-header">
+            <h1>📍 Pet-friendly локації у Львові</h1>
+        </div>
+
+        <div class="map-wrapper">
+            <iframe
+                src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d20587.439089397256!2d24.02236658960484!3d49.83437959952349!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1zcGV0LWZyaWVuZGx5INC30LDQutC70LDQtNC4INC70YzQstGW0LI!5e0!3m2!1suk!2sua!4v1781638181619!5m2!1suk!2sua"
+                allowfullscreen="" 
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+        </div>
+
+    </div>
+
 </body>
 
 </html>
@@ -2933,8 +3429,7 @@ urlpatterns = [
     path('AI',views.ai_chat_page, name = 'ai_chat'),
     path('find_home',views.find_home, name='find_home'),
     path('pricing',views.pricing, name = 'pricing'),
-
-
+    path('map',views.map, name = 'map')
 ]
 
 
@@ -3103,11 +3598,9 @@ def pricing(request):
     return render(request,'main/pricing.html')
 
 
+def map(request):
+    return render(request,'main/map.html')
 
-
-================================================
-FILE: main\__init__.py
-================================================
 
 
 
@@ -3290,6 +3783,8 @@ LOGIN_URL = 'login'
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = '/static/'
+NOVAPOST_API_KEY = 'ТВІЙ_КЛЮЧ_З_КАБІНЕТУ'
+NOVAPOST_BASE_URL = 'https://api.novapost.com/v.1.0'
 
 
 ================================================
@@ -3616,6 +4111,54 @@ class Migration(migrations.Migration):
 
 
 ================================================
+FILE: servises\migrations\0007_employee_img.py
+================================================
+
+# Generated by Django 6.0.3 on 2026-06-16 19:50
+
+from django.db import migrations, models
+
+
+class Migration(migrations.Migration):
+
+    dependencies = [
+        ('servises', '0006_chatmessage'),
+    ]
+
+    operations = [
+        migrations.AddField(
+            model_name='employee',
+            name='img',
+            field=models.ImageField(blank=True, null=True, upload_to='servises/', verbose_name='фото співробітника'),
+        ),
+    ]
+
+
+================================================
+FILE: servises\migrations\0008_employee_price.py
+================================================
+
+# Generated by Django 6.0.3 on 2026-06-16 20:00
+
+from django.db import migrations, models
+
+
+class Migration(migrations.Migration):
+
+    dependencies = [
+        ('servises', '0007_employee_img'),
+    ]
+
+    operations = [
+        migrations.AddField(
+            model_name='employee',
+            name='price',
+            field=models.PositiveIntegerField(default=1000, verbose_name='ціна'),
+        ),
+    ]
+
+
+================================================
 FILE: servises\migrations\__init__.py
 ================================================
 
@@ -3645,6 +4188,9 @@ class Employee(models.Model):
         on_delete=models.CASCADE
     )
     descrp = models.CharField(max_length=400,verbose_name='ваш опис',default='я працівник')
+    price = models.PositiveIntegerField(default=1000, verbose_name='ціна')
+    img = models.ImageField(upload_to='servises/',null=True,blank=True,verbose_name='фото співробітника')
+
 
     def __str__(self):
         return self.name
@@ -3904,9 +4450,43 @@ FILE: servises\templates\servises\servises.html
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 3rem;
             border: 3px solid var(--white);
             box-shadow: 0 4px 12px rgba(124, 58, 237, 0.1);
+            overflow: hidden;
+        }
+
+        .expert-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Силует за замовчуванням без емодзі */
+        .default-avatar {
+            width: 100%;
+            height: 100%;
+            background-color: #E5E7EB;
+            position: relative;
+        }
+        .default-avatar::before {
+            content: '';
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background: #9CA3AF;
+            border-radius: 50%;
+            top: 20px;
+            left: 30px;
+        }
+        .default-avatar::after {
+            content: '';
+            position: absolute;
+            width: 70px;
+            height: 40px;
+            background: #9CA3AF;
+            border-radius: 50% 50% 0 0;
+            bottom: -10px;
+            left: 15px;
         }
 
         /* Онлайн статус */
@@ -3957,7 +4537,7 @@ FILE: servises\templates\servises\servises.html
             line-height: 1.5;
             font-style: italic;
             margin-bottom: 20px;
-            flex-grow: 1; /* Штовхає прайс донизу для рівності карток */
+            flex-grow: 1;
         }
 
         /* Прайс-зона */
@@ -4013,56 +4593,55 @@ FILE: servises\templates\servises\servises.html
             color: var(--muted);
             border: 1px solid var(--border);
         }
+
         /* ── СТИЛІЗАЦІЯ СЕЛЕКТУ ФІЛЬТРАЦІЇ ── */
-.filter-wrapper {
-    margin-top: 25px;
-    display: flex;
-    justify-content: center;
-}
+        .filter-wrapper {
+            margin-top: 25px;
+            display: flex;
+            justify-content: center;
+        }
 
-.custom-select {
-    appearance: none; /* Прибираємо дефолтну стрілку браузера */
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    
-    font-family: 'DM Sans', sans-serif;
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--purple);
-    
-    background-color: var(--white);
-    /* Додаємо кастомну гарну стрілочку через SVG */
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%237C3AED' stroke-width='2.5'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19.5 8.25l-7.5 7.5-7.5-7.5'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 16px center;
-    background-size: 16px;
-    
-    padding: 12px 45px 12px 20px;
-    border: 2px solid var(--purple-light);
-    border-radius: 16px;
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(124, 58, 237, 0.04);
-    transition: all 0.3s ease;
-    min-width: 280px;
-}
+        .custom-select {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            
+            font-family: 'DM Sans', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--purple);
+            
+            background-color: var(--white);
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%237C3AED' stroke-width='2.5'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19.5 8.25l-7.5 7.5-7.5-7.5'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            background-size: 16px;
+            
+            padding: 12px 45px 12px 20px;
+            border: 2px solid var(--purple-light);
+            border-radius: 16px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(124, 58, 237, 0.04);
+            transition: all 0.3s ease;
+            min-width: 280px;
+        }
 
-.custom-select:hover {
-    border-color: var(--purple-mid);
-    box-shadow: 0 6px 20px rgba(124, 58, 237, 0.1);
-    transform: translateY(-1px);
-}
+        .custom-select:hover {
+            border-color: var(--purple-mid);
+            box-shadow: 0 6px 20px rgba(124, 58, 237, 0.1);
+            transform: translateY(-1px);
+        }
 
-.custom-select:focus {
-    outline: none;
-    border-color: var(--purple);
-    box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.15);
-}
+        .custom-select:focus {
+            outline: none;
+            border-color: var(--purple);
+            box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.15);
+        }
     </style>
 </head>
 
 <body>
 
-    <!-- ── НАВІГАЦІЯ ── -->
     <nav>
         <div class="nav-logo">Pet<span>Care</span></div>
         <ul class="nav-links">
@@ -4076,13 +4655,12 @@ FILE: servises\templates\servises\servises.html
         </div>
     </nav>
 
-    <!-- ── ХЕДЕР СТОРІНКИ ТА ФІЛЬТР ── -->
     <div class="page-header">
-        <h1>Наші Спеціалісти 🧑‍⚕️🐾</h1>
+        <h1>Наші Спеціалісти</h1>
         <p>Оберіть професіонала, який подбає про здоров'я та комфорт вашого улюбленця. Запис в один клік!</p>
         
-        <p style="margin-top: 15px;">
-            <select id="sklad-select" onchange="filterServices(this.value)">
+        <div class="filter-wrapper">
+            <select id="sklad-select" class="custom-select" onchange="filterServices(this.value)">
                 <option value="">✨ Вибрати спеціаліста</option>
                 {% for service in items %}
                     {% with service_id_str=service.id|slugify %}
@@ -4092,51 +4670,40 @@ FILE: servises\templates\servises\servises.html
                     {% endwith %}
                 {% endfor %}
             </select>
-        </p>
+        </div>
     </div>
 
-    <!-- ── СІТКА СПЕЦІАЛІСТІВ ── -->
     <div class="team-grid">
         {% for employee in employees %}
         <div class="expert-card">
 
-            <!-- Аватарка -->
             <div class="expert-avatar-wrapper">
                 <div class="expert-avatar">
-                    {% if "ветеринар" in employee.profession.name|lower or "лікар" in employee.profession.name|lower %}
-                        🩺
-                    {% elif "сітер" in employee.profession.name|lower or "догляд" in employee.profession.name|lower %}
-                        🏡
-                    {% elif "грум" in employee.profession.name|lower or "стриж" in employee.profession.name|lower %}
-                        ✂️
+                    {% if employee.img %}
+                        <img src="{{ employee.img.url }}" alt="{{ employee.name }}">
                     {% else %}
-                        👤
+                        <div class="default-avatar"></div>
                     {% endif %}
                 </div>
                 <div class="status-dot"></div>
             </div>
 
-            <!-- Інформація -->
             <h3 class="expert-name">{{ employee.name }}</h3>
             <span class="spec-badge">{{ employee.profession.name }}</span>
 
-            <!-- Опис загальної послуги -->
             <p class="expert-bio">
                 <strong>Послуга:</strong> {{ employee.profession.discrp }}
             </p>
             
-            <!-- Особисте резюме працівника -->
             <p class="expert-personal-bio">
                 « {{ employee.descrp }} »
             </p>
 
-            <!-- Ціна -->
             <div class="price-zone">
                 <span class="price-label">Вартість послуги:</span>
-                <span class="price-value">{{ employee.profession.price }} грн</span>
+                <span class="price-value">{{ employee.price }} грн</span>
             </div>
 
-            <!-- Динамічне посилання на форму -->
             <a href="{% url 'order_service_with_employee' employee.profession.id employee.id %}" class="btn-book">
                 Записатись на прийом
             </a>
@@ -4150,7 +4717,6 @@ FILE: servises\templates\servises\servises.html
         {% endfor %}
     </div>
 
-    <!-- ── СКРИПТ ДЛЯ АВТОМАТИЧНОЇ ФІЛЬТРАЦІЇ ── -->
     <script>
         function filterServices(serviceId) {
             const currentUrl = new URL(window.location.href);
@@ -4201,7 +4767,6 @@ from django.db.models import Q
 
 
 @login_required(login_url='login')
-@login_required(login_url='login')
 def servises_page(request):
     items = Servises.objects.all()
     # Базовий запит — беремо всіх
@@ -4219,6 +4784,8 @@ def servises_page(request):
         'employees': employees,
         'chosen_service_id': chosen_service_id, # Передаємо назад, щоб зберегти вибір у селекті
     })
+
+
 @login_required(login_url='login')
 def order_page(request, service_id=None, employee_id=None):
     initial_data = {}
@@ -4274,6 +4841,9 @@ class ShopConfig(AppConfig):
 ================================================
 FILE: shop\form.py
 ================================================
+
+from django import forms
+from .models import Order
 
 
 
@@ -4384,6 +4954,133 @@ class Migration(migrations.Migration):
 
 
 ================================================
+FILE: shop\migrations\0004_alter_order_options_remove_order_product_and_more.py
+================================================
+
+# Generated by Django 6.0.3 on 2026-07-21 18:47
+
+import django.db.models.deletion
+from django.conf import settings
+from django.db import migrations, models
+
+
+class Migration(migrations.Migration):
+
+    dependencies = [
+        ('shop', '0003_remove_product_user_alter_order_user'),
+        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
+    ]
+
+    operations = [
+        migrations.AlterModelOptions(
+            name='order',
+            options={},
+        ),
+        migrations.RemoveField(
+            model_name='order',
+            name='product',
+        ),
+        migrations.RemoveField(
+            model_name='order',
+            name='quantity',
+        ),
+        migrations.AddField(
+            model_name='order',
+            name='full_name',
+            field=models.CharField(default=1, max_length=255, verbose_name='ПІБ'),
+            preserve_default=False,
+        ),
+        migrations.AlterField(
+            model_name='order',
+            name='address',
+            field=models.TextField(verbose_name='Адреса доставки'),
+        ),
+        migrations.AlterField(
+            model_name='order',
+            name='created_at',
+            field=models.DateTimeField(auto_now_add=True, verbose_name='Дата створення'),
+        ),
+        migrations.AlterField(
+            model_name='order',
+            name='phone',
+            field=models.CharField(max_length=20, verbose_name='Телефон'),
+        ),
+        migrations.AlterField(
+            model_name='order',
+            name='user',
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to=settings.AUTH_USER_MODEL),
+        ),
+        migrations.CreateModel(
+            name='OrderItem',
+            fields=[
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('quantity', models.PositiveIntegerField(default=1)),
+                ('price', models.DecimalField(decimal_places=2, max_digits=10, max_length=10)),
+                ('order', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='items', to='shop.order')),
+                ('product', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='shop.product')),
+            ],
+        ),
+    ]
+
+
+================================================
+FILE: shop\migrations\0005_alter_order_options_alter_product_options_and_more.py
+================================================
+
+# Generated by Django 6.0.3 on 2026-07-21 19:10
+
+from django.db import migrations, models
+
+
+class Migration(migrations.Migration):
+
+    dependencies = [
+        ('shop', '0004_alter_order_options_remove_order_product_and_more'),
+    ]
+
+    operations = [
+        migrations.AlterModelOptions(
+            name='order',
+            options={'ordering': ['-created_at'], 'verbose_name': 'Замовлення', 'verbose_name_plural': 'Замовлення'},
+        ),
+        migrations.AlterModelOptions(
+            name='product',
+            options={'verbose_name': 'Товар', 'verbose_name_plural': 'Товари'},
+        ),
+        migrations.AlterField(
+            model_name='orderitem',
+            name='price',
+            field=models.DecimalField(decimal_places=2, max_digits=10),
+        ),
+        migrations.AlterField(
+            model_name='product',
+            name='count',
+            field=models.SmallIntegerField(default=0, verbose_name='Кількість на складі'),
+        ),
+        migrations.AlterField(
+            model_name='product',
+            name='discrp',
+            field=models.CharField(max_length=100, verbose_name='Опис'),
+        ),
+        migrations.AlterField(
+            model_name='product',
+            name='img',
+            field=models.ImageField(upload_to='', verbose_name='Фото'),
+        ),
+        migrations.AlterField(
+            model_name='product',
+            name='name',
+            field=models.CharField(max_length=50, verbose_name='Назва'),
+        ),
+        migrations.AlterField(
+            model_name='product',
+            name='price',
+            field=models.PositiveIntegerField(default=0, verbose_name='Ціна'),
+        ),
+    ]
+
+
+================================================
 FILE: shop\migrations\__init__.py
 ================================================
 
@@ -4393,37 +5090,98 @@ FILE: shop\migrations\__init__.py
 FILE: shop\models.py
 ================================================
 
-from django.db import models
 from django.contrib.auth.models import User
+from django.db import models
 
 
 class Product(models.Model):
-    name = models.CharField(max_length=50)
-    count = models.SmallIntegerField(default=0)
-    discrp = models.CharField(max_length=100)
-    price = models.PositiveIntegerField(default=0)
-    img  = models.ImageField()
+    name = models.CharField(max_length=50, verbose_name="Назва")
+    count = models.SmallIntegerField(default=0, verbose_name="Кількість на складі")
+    discrp = models.CharField(max_length=100, verbose_name="Опис")
+    price = models.PositiveIntegerField(default=0, verbose_name="Ціна")
+    img = models.ImageField(verbose_name="Фото")
+
+    class Meta:
+        verbose_name = "Товар"
+        verbose_name_plural = "Товари"
+
     def __str__(self):
         return self.name
-    class Meta:
-        verbose_name="Товар"
+
 
 class Order(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name="Товар")
-    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Покупець",related_name='shop_user')
-    quantity = models.PositiveIntegerField(default=1, verbose_name="Кількість")
-    phone = models.CharField(max_length=15, verbose_name="Номер телефону")
-    address = models.CharField(max_length=255, verbose_name="Адреса доставки")
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f"Замовлення {self.id} - {self.product.name}"
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    full_name = models.CharField(max_length=255, verbose_name="ПІБ")
+    phone = models.CharField(max_length=20, verbose_name="Телефон")
+    address = models.TextField(verbose_name="Адреса доставки")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата створення")
 
     class Meta:
         verbose_name = "Замовлення"
+        verbose_name_plural = "Замовлення"
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"Замовлення #{self.id} — {self.full_name}"
+
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, related_name='items', on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(default=1)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def __str__(self):
+        return f"{self.product.name} x {self.quantity}"
 
 ================================================
-FILE: shop\templates\shop\order_shop.html
+FILE: shop\nova_posta.py
+================================================
+
+import requests
+from django.http import JsonResponse
+from django.conf import settings
+
+NOVAPOST_API_KEY = "ТВІЙ_API_КЛЮЧ_З_КАБІНЕТУ"
+BASE_URL = "https://api.novapost.com/v.1.0"
+
+def search_settlements(request):
+    """Пошук міст для інпуту"""
+    query = request.GET.get('q', '')
+    
+    headers = {
+        "Authorization": NOVAPOST_API_KEY,
+        "Accept": "application/json"
+    }
+    
+    params = {
+        "countryCodes[]": "UA",
+        "textSearch": query,
+        "limit": 10
+    }
+    
+    response = requests.get(f"{BASE_URL}/settlements", headers=headers, params=params)
+    return JsonResponse(response.json())
+
+
+def get_divisions(request, settlement_id):
+    """Отримання відділень для вибраного міста"""
+    headers = {
+        "Authorization": NOVAPOST_API_KEY,
+        "Accept": "application/json"
+    }
+    
+    params = {
+        "countryCodes[]": "UA",
+        "settlementIds[]": settlement_id,
+        "limit": 100
+    }
+    
+    response = requests.get(f"{BASE_URL}/divisions", headers=headers, params=params)
+    return JsonResponse(response.json())
+
+================================================
+FILE: shop\templates\shop\cart.html
 ================================================
 
 {% load static %}
@@ -4433,83 +5191,123 @@ FILE: shop\templates\shop\order_shop.html
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Реєстрація улюбленця | PetCare</title>
-    <link rel="stylesheet" href="{% static 'main/css/regiser.css' %}">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'main/css/order.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/cart.css' %}">
+    <title>Кошик | PetCare</title>
     <style>
-        /* Додамо трохи стилів для завантаження фото, якщо їх немає в CSS */
-        .input-group label { display: block; margin-bottom: 8px; font-weight: 600; color: #4B5563; }
-        .file-upload-wrapper {
-            border: 2px dashed #A78BFA;
-            padding: 15px;
-            border-radius: 12px;
-            background: #F5F3FF;
-            text-align: center;
+        /* Стилі для випадаючого списку міст Нової Пошти */
+        .city-autocomplete-wrapper {
+            position: relative;
         }
-        .input-field-file { width: 100%; cursor: pointer; }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: #ffffff;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-top: 4px;
+        }
+
+        .dropdown-item {
+            padding: 10px 14px;
+            cursor: pointer;
+            font-size: 14px;
+            color: #374151;
+            transition: background-color 0.15s ease;
+        }
+
+        .dropdown-item:hover {
+            background-color: #f3f4f6;
+            color: var(--purple, #6b21a8);
+        }
+
+        .dropdown-item.empty {
+            color: #9ca3af;
+            cursor: default;
+        }
+
+        .dropdown-item.empty:hover {
+            background-color: transparent;
+        }
     </style>
 </head>
 
 <body>
-    <div class="reg-container">
-        <div class="reg-card">
-            <div class="reg-header">
-                <div class="logo">Pet<span>Care</span></div>
-                <h1>Новий хвостик</h1>
-                <p>Додайте інформацію про вашого улюбленця</p>
+    <nav>
+        <div class="nav-logo">Pet<span>Care</span></div>
+        <ul class="nav-links">
+            <li><a href="{% url 'home' %}">Головна</a></li>
+            <li><a href="{% url 'shop_page' %}">Товари</a></li>
+            <li><a href="{% url 'register_pets' %}">Додати тварину</a></li>
+            <li><a href="{% url 'servises' %}">Послуги</a></li>
+            {% if user.is_authenticated %}
+            <li><a style="background-color: #EF4444;" href="{% url 'logout' %}">Вийти</a></li>
+            {% else %}
+            <li><a style="background-color: var(--purple);color: #F5F3FF;" href="{% url 'register' %}">Увійти</a></li>
+            {% endif %}
+        </ul>
+        <div class="nav-right">
+            <div class="cart-icon" style="background-color:var(--purple); border-radius: 20px; padding: 5px 10px;">
+                <a style="text-decoration: none;color: #F5F3FF;" href="{% url 'cart_page' %}" class="active">
+                    🛒 Кошик (<span id="cart-count">0</span>)
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="cart-page">
+        <div class="cart-container">
+            <h1 class="cart-title">Ваш кошик</h1>
+
+            <div id="cart-items"></div>
+
+            <div class="cart-summary">
+                <span>Разом:</span>
+                <span id="total-price">0 грн</span>
             </div>
 
-            <form id="pet-registration-form" method="post" enctype="multipart/form-data">
+            <form id="checkout-form" class="order-form">
                 {% csrf_token %}
+                <h3>Дані для доставки</h3>
 
-                <div class="input-group">
-                    <label>Тип тварини</label>
-                    {{ form.type_pets }}
+                <div class="form-group">
+                    <label for="full_name">Ваше ім'я та прізвище</label>
+                    <input type="text" id="full_name" name="full_name" required placeholder="Іван Іванов">
                 </div>
 
-                <div class="input-group">
-                    <label>Порода</label>
-                    {{ form.poroda }}
+                <div class="form-group">
+                    <label for="phone">Номер телефону</label>
+                    <input type="tel" id="phone" name="phone" required placeholder="+380991234567">
                 </div>
 
-                <div class="input-group">
-                    <label>Кличка</label>
-                    {{ form.name }}
+                <!-- Блок вибору Нової Пошти -->
+                <div class="form-group city-autocomplete-wrapper">
+                    <label for="city-input">Місто доставки (Нова Пошта)</label>
+                    <input type="text" id="city-input" placeholder="Почніть вводити місто..." autocomplete="off" required>
+                    <div id="city-dropdown" class="dropdown-menu" style="display: none;"></div>
+                    <input type="hidden" id="selected-city-name">
                 </div>
 
-                <div class="input-row" style="display: flex; gap: 15px;">
-                    <div class="input-group" style="flex: 1;">
-                        <label>Вік</label>
-                        {{ form.age }}
-                    </div>
-                    <div class="input-group" style="flex: 1;">
-                        <label>Вага (кг)</label>
-                        {{ form.weight }}
-                    </div>
+                <div class="form-group">
+                    <label for="warehouse-select">Відділення або поштомат</label>
+                    <select id="warehouse-select" disabled required>
+                        <option value="">Спочатку оберіть місто</option>
+                    </select>
                 </div>
 
-                <div class="input-group">
-                    <label>Номер паспорта</label>
-                    {{ form.passport_number }}
-                </div>
-
-                <div class="input-group">
-                    <label>Фото улюбленця</label>
-                    <div class="file-upload-wrapper">
-                        {{ form.img }}
-                    </div>
-                </div>
-
-                <button type="submit" class="btn-reg" style="margin-top: 20px; width: 100%; padding: 14px; background: #7C3AED; color: white; border: none; border-radius: 12px; font-weight: 700; cursor: pointer;">
-                    Зберегти хвостика ✨
-                </button>
-
-                <p class="footer-text" style="text-align: center; margin-top: 20px;">
-                    <a href="{% url 'home' %}" style="color: #6B7280; text-decoration: none; font-size: 0.9rem;">← Повернутися на головну</a>
-                </p>
+                <button type="submit" class="btn-checkout">Оформити замовлення</button>
             </form>
         </div>
-    </div>
+    </main>
+
+    <script src="{% static 'main/js/cart.js' %}"></script>
 </body>
 
 </html>
@@ -4537,6 +5335,11 @@ FILE: shop\templates\shop\shop.html
             <li><a href="{% url 'shop_page' %}" class="active">Товари</a></li>
             <li><a href="{% url 'register_pets' %}">Додати тварину</a></li>
             <li><a href="{% url 'servises' %}">Послуги</a></li>
+            {% if user.is_authenticated %}
+            <li><a style="background-color: #EF4444;" href="{% url 'logout' %}">Вийти</a></li>
+            {% else %}
+            <li><a style="background-color: var(--purple);color: #F5F3FF;" href="{% url 'register' %}">Увійти</a></li>
+            {% endif %}
         </ul>
         <div class="nav-right">
             <button class="notif-btn">
@@ -4547,15 +5350,15 @@ FILE: shop\templates\shop\shop.html
                 </svg>
                 <span class="notif-dot"></span>
             </button>
-            <div class="avatar">Ол</div>
+            <div class="cart-icon" style="background-color:var(--purple); border-radius: 20px ; padding: 5px 10px;">
+                <a style="text-decoration: none;color: #F5F3FF;" href="{% url 'cart_page' %}">
+                    🛒 Кошик (<span id="cart-count">0</span>)
+                </a>
+            </div>
         </div>
     </nav>
 
     <main>
-        <div class="main-header">
-            <a href="#"></a>
-        </div>
-
         <div class="product-grid">
             {% for product in products %}
             <article class="product-card">
@@ -4584,9 +5387,20 @@ FILE: shop\templates\shop\shop.html
                         <p>{{ product.discrp|truncatechars:60 }}</p>
                     </div>
 
-                    <div class="product-actions">
-                        <button class="buy-button">В кошик</button>
+                    <div class="quantity-controls" style="display: flex; align-items: center; gap: 8px; margin: 10px 0;">
+                        <button type="button" onclick="changeQuantity(this, -1)">-</button>
+                        <span class="qty-number">1</span>
+                        <button type="button" onclick="changeQuantity(this, 1)" data-max="{{ product.count }}">+</button>
                     </div>
+
+                    <button class="buy-button" onclick="addToCart(this)"
+                            data-id="{{ product.id }}"
+                            data-name="{{ product.name }}"
+                            data-price="{{ product.price }}"
+                            data-img="{% if product.img %}{{ product.img.url }}{% endif %}"
+                            {% if product.count <= 0 %}disabled{% endif %}>
+                        {% if product.count > 0 %}В кошик{% else %}Немає в наявності{% endif %}
+                    </button>
                 </div>
             </article>
             {% empty %}
@@ -4596,6 +5410,8 @@ FILE: shop\templates\shop\shop.html
             {% endfor %}
         </div>
     </main>
+
+    <script src="{% static 'main/js/cart.js' %}"></script>
 </body>
 
 </html>
@@ -4617,7 +5433,11 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('',views.shop_page, name='shop_page')
+    path('',views.shop_page, name='shop_page'),
+    path('cart_page/',views.cart_page,name ='cart_page'),
+    path('create-order/', views.create_order, name='create_order'),
+    path('api/novapost/settlements/', views.np_settlements, name='np_settlements'),
+    path('api/novapost/divisions/<int:settlement_id>/', views.np_divisions, name='np_divisions'),
 ]
 
 
@@ -4625,14 +5445,148 @@ urlpatterns = [
 FILE: shop\views.py
 ================================================
 
-from django.shortcuts import render
-from .models import Product
+import json
+import requests
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
+from django.db import transaction
+from django.http import JsonResponse
+from django.shortcuts import render
+from django.views.decorators.http import require_GET, require_POST
+from .models import Order, OrderItem, Product
+
+
+# ________ Views для сторінок ________
 
 @login_required(login_url='login')
 def shop_page(request):
     products = Product.objects.all()
-    return render(request, 'shop/shop.html', {'products': products})  
+    return render(request, 'shop/shop.html', {'products': products})
+
+
+@login_required(login_url='login')
+def cart_page(request):
+    """Кошик повністю на localStorage, сервер лише віддає шаблон."""
+    return render(request, 'shop/cart.html')
+
+
+# ________ NovaPost API proxy ________
+
+@require_GET
+def np_settlements(request):
+    """Пошук міст за введеним текстом (мінімум 2 символи)."""
+    query = request.GET.get('q', '').strip()
+    if len(query) < 2:
+        return JsonResponse({'items': []})
+
+    headers = {
+        'Authorization': getattr(settings, 'NOVAPOST_API_KEY', ''),
+        'Accept': 'application/json',
+    }
+    params = {
+        'countryCodes[]': 'UA',
+        'textSearch': query,
+        'limit': 10,
+    }
+
+    try:
+        base_url = getattr(settings, 'NOVAPOST_BASE_URL', 'https://api.novapost.com/v.1.0')
+        response = requests.get(f"{base_url}/settlements", headers=headers, params=params, timeout=5)
+        response.raise_for_status()
+        return JsonResponse(response.json())
+    except requests.RequestException as e:
+        return JsonResponse({'status': 'error', 'message': f'Помилка запиту до NovaPost: {str(e)}'}, status=502)
+
+
+@require_GET
+def np_divisions(request, settlement_id):
+    """Отримання відділень/поштоматів для обраного міста."""
+    headers = {
+        'Authorization': getattr(settings, 'NOVAPOST_API_KEY', ''),
+        'Accept': 'application/json',
+    }
+    params = {
+        'countryCodes[]': 'UA',
+        'settlementIds[]': settlement_id,
+        'limit': 100,
+    }
+
+    try:
+        base_url = getattr(settings, 'NOVAPOST_BASE_URL', 'https://api.novapost.com/v.1.0')
+        response = requests.get(f"{base_url}/divisions", headers=headers, params=params, timeout=5)
+        response.raise_for_status()
+        return JsonResponse(response.json())
+    except requests.RequestException as e:
+        return JsonResponse({'status': 'error', 'message': f'Помилка запиту до NovaPost: {str(e)}'}, status=502)
+
+
+# ________ Створення замовлення ________
+
+@require_POST
+def create_order(request):
+    try:
+        data = json.loads(request.body)
+    except json.JSONDecodeError:
+        return JsonResponse({'status': 'error', 'message': 'Некоректний формат запиту'}, status=400)
+
+    full_name = (data.get('full_name') or '').strip()
+    phone = (data.get('phone') or '').strip()
+    address = (data.get('address') or '').strip()
+    items = data.get('items') or []
+
+    if not full_name or not phone or not address:
+        return JsonResponse({'status': 'error', 'message': 'Заповніть усі поля доставки'}, status=400)
+
+    if not items:
+        return JsonResponse({'status': 'error', 'message': 'Кошик порожній'}, status=400)
+
+    try:
+        with transaction.atomic():
+            order = Order.objects.create(
+                user=request.user if request.user.is_authenticated else None,
+                full_name=full_name,
+                phone=phone,
+                address=address,
+            )
+
+            for item in items:
+                product_id = item.get('id')
+                if not product_id:
+                    raise ValueError('Некоректний ідентифікатор товару')
+
+                product = Product.objects.select_for_update().get(id=product_id)
+                
+                try:
+                    quantity = int(item.get('quantity', 1))
+                except (ValueError, TypeError):
+                    raise ValueError(f'Некоректна кількість товару «{product.name}»')
+
+                if quantity < 1:
+                    raise ValueError(f'Кількість товару «{product.name}» має бути більшою за 0')
+
+                if product.count < quantity:
+                    raise ValueError(
+                        f'Недостатньо товару «{product.name}» на складі (залишилось {product.count} шт.)'
+                    )
+
+                OrderItem.objects.create(
+                    order=order,
+                    product=product,
+                    quantity=quantity,
+                    price=product.price,
+                )
+
+                product.count -= quantity
+                product.save(update_fields=['count'])
+
+    except Product.DoesNotExist:
+        return JsonResponse({'status': 'error', 'message': 'Один із товарів у кошику більше не існує'}, status=400)
+    except ValueError as e:
+        return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+    except Exception:
+        return JsonResponse({'status': 'error', 'message': 'Помилка сервера при створенні замовлення'}, status=500)
+
+    return JsonResponse({'status': 'success', 'message': 'Замовлення успішно створено', 'order_id': order.id})
 
 ================================================
 FILE: shop\__init__.py

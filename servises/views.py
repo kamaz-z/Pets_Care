@@ -1,8 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .form import Order_Servises_form
-from .models import Servises, Employee, Order
+from .models import Servises, Employee
 from django.contrib.auth.decorators import login_required
-from django.db.models import Q
 
 
 @login_required(login_url='login')

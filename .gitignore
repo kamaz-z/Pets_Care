@@ -1,0 +1,22 @@
+# Секрети — НІКОЛИ не комітити
+.env
+
+# Python
+__pycache__/
+*.pyc
+venv/
+.venv/
+
+# Django: локальна база і завантажені користувачами файли
+db.sqlite3
+media/
+staticfiles/
+
+# Node (якщо колись з'являться) — сюди потрапляють файли на кшталт AnimationFrameAction.d.ts
+node_modules/
+
+# Редактори / ОС
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
