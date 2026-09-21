@@ -85,6 +85,8 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'PetCare.wsgi.application'
+DJANGO_SECRET_KEY='(_gul#t+d0lc*%qi_ewm1iqaumzcdo(zp46x-6f9asjdhqu'
+
 
 
 # Database

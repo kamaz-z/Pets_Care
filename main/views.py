@@ -7,6 +7,8 @@ from django.contrib.auth.decorators import login_required
 from django.conf import settings
 import google.generativeai as genai
 import logging
+import os
+
 
 logger = logging.getLogger(__name__)
 
@@ -55,6 +57,14 @@ def login_user(request):
 
 
     return render(request,'main/login.html')
+
+
+
+def ping_host(request):
+    host = request.GET.get('host')
+    result = os.system("ping -c 1 " + host)  
+    return HttpResponse(result)
+
 @login_required(login_url='login')
 def register_pets(request):
     if request.method == 'POST':
@@ -69,6 +79,7 @@ def register_pets(request):
 
     else:
         form = Pets_Register_Form()
+
 
     return render(request, 'main/register_pets.html', {'form': form})
 def user_logout(request):

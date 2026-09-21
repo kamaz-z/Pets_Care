@@ -1,3 +1,7 @@
 from django.test import TestCase
 
-# Create your tests here.
+from django.utils.safestring import mark_safe
+
+def show_comment(request):
+    comment = request.GET.get('comment')
+    return HttpResponse(mark_safe(comment))  

@@ -23,6 +23,7 @@ def cart_page(request):
     return render(request, 'shop/cart.html')
 
 
+
 # ________ NovaPost API proxy ________
 
 @require_GET
